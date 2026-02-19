@@ -8,11 +8,25 @@
 import SwiftUI
 
 struct EditProfileView: View {
+    @State var userName: String
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            TextField("Inserisci il nuovo userName")
+                .font(.system(size: 20))
+                .padding()
+            
+            
+        }
+        .frame(maxWidth: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 25)
+                .fill(Color(.systemGray6))
+        )
+        .padding()
+        
     }
 }
 
 #Preview {
-    EditProfileView()
+    EditProfileView(userName: "salvo")
 }
