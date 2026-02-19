@@ -8,25 +8,48 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @State var userName: String
+    @Binding var user: User?
+    @State var userName = ""
     var body: some View {
         VStack{
-            TextField("Inserisci il nuovo userName")
-                .font(.system(size: 20))
-                .padding()
+            Spacer()
+            VStack{
+                TextField("Inserisci il nuovo Username", text: $userName)
+                    .font(.system(size: 20))
+                    .padding()
+                
+                
+            }
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(Color(.systemGray6))
+            ).padding(.horizontal)
+
+            Button(action: {
+                if var currentUser = user {
+                    currentUser.setUserName(userName: userName)
+                    user = currentUser
+                }
+            }){
+                Text("Conferma")
+                    .padding()
+                
+            }.frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color(.systemGray6))
+                ).padding(.horizontal)
+              
+            Spacer()
+            Spacer()
             
-            
-        }
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 25)
-                .fill(Color(.systemGray6))
-        )
-        .padding()
+            }
+ 
         
     }
 }
 
 #Preview {
-    EditProfileView(userName: "salvo")
+    EditProfileView(user: .constant(User(userName: "userName", mail: "salvo")))
 }

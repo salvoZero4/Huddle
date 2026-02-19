@@ -51,7 +51,7 @@ struct ProfileView: View {
                             .fill(Color(.systemGray6))
                     )
                 }
-                NavigationLink(destination: MyGroupView()){
+                NavigationLink(destination: EditProfileView(user: $user)){
                     Text("Edit Profile")
                         .padding()
                         .frame(maxWidth: .infinity)
