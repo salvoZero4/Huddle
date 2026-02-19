@@ -9,13 +9,14 @@ import SwiftUI
 
 struct ProfileView: View {
     @State var user : User?
-    @State var showView = false
+    @State private var showLogoutConfirmation = false
     var body: some View {
         VStack{
             
             Text("My Profile")
                 .padding()
                 .font(.system(size: 20))
+                .fontWeight(.bold)
             NavigationStack{
                 VStack{
                     VStack{
@@ -29,12 +30,16 @@ struct ProfileView: View {
                                     .colorMultiply(.blue)
                                     .padding()
                                     .aspectRatio(contentMode: .fill)
-                                Text("sss")
-                                    .font(.system(size: 30))
-                                Text("ss")
-                                    .padding()
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.blue)
+                                if user != nil{
+                                    Text(user!.userName)
+                                        .font(.system(size: 30))
+                                        .fontWeight(.bold)
+                                    Text(user!.mail)
+                                        .padding([.bottom])
+                                        .font(.system(size: 15))
+                                        .foregroundColor(.blue)
+                                        .fontWeight(.bold)
+                                }
                             }
                             Spacer()
                         }
@@ -42,7 +47,7 @@ struct ProfileView: View {
                         
                     }
                     .background(
-                        RoundedRectangle(cornerRadius: 30)
+                        RoundedRectangle(cornerRadius: 25)
                             .fill(Color(.systemGray6))
                     )
                 }
@@ -50,41 +55,33 @@ struct ProfileView: View {
                     Text("Edit Profile")
                         .padding()
                         .frame(maxWidth: .infinity)
+                        .fontWeight(.bold)
                 }.background(
-                    RoundedRectangle(cornerRadius: 30)
+                    RoundedRectangle(cornerRadius: 25)
                     .fill(Color(.systemGray6))
                 )
-                Button(action: {
-                    showView = true
-                }){
-                    Text("Logout")
-                        .foregroundColor(.red)
-                        .padding()
-                    
-                        
-                }.frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: 30)
-                        .fill(Color(.systemGray6))
-                    )
+                VStack {
+                            Button("Logout") {
+                                showLogoutConfirmation = true
+                            }
+                            .foregroundStyle(.red)
+                            .fontWeight(.bold)
+                            .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
+                                Button("Accetta", role: .destructive) {
+                                    user = nil
+                                    print("Logout effettuato")
+                                }
+                                Button("Annulla", role: .cancel) { }
+                            }
+                            .padding()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(Color(.systemGray6))
+                        )
                 Spacer()
                 
-                if showView {
-                    
-                    VStack{
-                        Text("Tap me!")
-                        Button("Show Modal") {
-                            self.showView.toggle()
-                        }.frame(width: 300, height: 200)
-                            .background(.red)
-                    }
-                }
-                            
-                
-                
-                
-                    
-                    
                        
             }
             
@@ -94,5 +91,5 @@ struct ProfileView: View {
     }
 }
 #Preview {
-    ProfileView()
+    ProfileView(user: User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it"))
 }
