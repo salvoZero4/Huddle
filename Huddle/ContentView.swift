@@ -48,7 +48,10 @@ struct Huddle: Identifiable,Codable{
     var building: String
     var room: String
     var users: [User]
-    //var date : ???
+    var description: String
+    var date: Date
+    var linkW: String
+    var linkT: String
     mutating func setBuilding(building: String){
         self.building = building
     }
@@ -60,10 +63,10 @@ struct Huddle: Identifiable,Codable{
         self.subject = subject
     }
     
-    /* mutating func setData(data: ???){
-        ???
+    mutating func setData(date: Date){
+        self.date = date
      }
-     */
+    
     
     
 }
