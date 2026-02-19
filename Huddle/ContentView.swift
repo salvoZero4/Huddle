@@ -8,7 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    @State var huddles = [
+            Huddle(subject: "Calculus I",
+                   building: "Building 6",
+                   room: "A330" ,
+                   description: "Let's do a general recap",
+                   date: Calendar.current.date(from: DateComponents(year: 2026, month: 3, day: 20, hour: 10)) ?? Date(),
+                   linkW: "",
+                   linkT: "",
+                   users:
+                    [User(userName: "Daniele Giammarresi",
+                          mail:"daniele.giammarresi@community.unipa.it"),
+                     User(userName: "Gabriele Barone",
+                          mail: "gabriele.barone@community.unipa.it")
+                    ]),
+            
+            Huddle(subject: "Physics",
+                   building: "Building 9",
+                   room: "U010" ,
+                   description: "Let's study the first 50 pages",
+                   date: Calendar.current.date(from: DateComponents(year: 2026, month: 2, day: 28, hour: 17)) ?? Date(),
+                   linkW: "",
+                   linkT: "",
+                   users:
+                    [User(userName: "Salvatore Scaravalle",
+                          mail:"salvatore.scaravalle@community.unipa.it"),
+                     User(userName: "Matteo Raimondi",
+                          mail: "matteo.raimondi@community.unipa.it")
+                    ])
+        ]
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -47,11 +75,11 @@ struct Huddle: Identifiable,Codable{
     var subject: String
     var building: String
     var room: String
-    var users: [User]
     var description: String
-    var date: Date
+    var date : Date
     var linkW: String
     var linkT: String
+    var users: [User]
     mutating func setBuilding(building: String){
         self.building = building
     }
@@ -63,13 +91,15 @@ struct Huddle: Identifiable,Codable{
         self.subject = subject
     }
     
-    mutating func setData(date: Date){
+    mutating func setDate(date: Date){
         self.date = date
-     }
-    
-    
-    
+    }
 }
+
+    
+    
+
+
 
 #Preview {
     ContentView()
