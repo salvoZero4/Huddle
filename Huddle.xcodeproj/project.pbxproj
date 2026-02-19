@@ -6,7 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9D7932B02F46331C00929534 /* ParthenoKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D7932AF2F46331C00929534 /* ParthenoKit.xcframework */; };
+		9D7932B12F46331C00929534 /* ParthenoKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9D7932AF2F46331C00929534 /* ParthenoKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9D7932B22F46331C00929534 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9D7932B12F46331C00929534 /* ParthenoKit.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		9D7932AF2F46331C00929534 /* ParthenoKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ParthenoKit.xcframework; path = ../../Downloads/ParthenoKit.xcframework; sourceTree = "<group>"; };
 		9D8866912F447BC7004614DE /* Hubble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hubble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -23,16 +43,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D7932B02F46331C00929534 /* ParthenoKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9D7932AE2F46331C00929534 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9D7932AF2F46331C00929534 /* ParthenoKit.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9D8866882F447BC7004614DE = {
 			isa = PBXGroup;
 			children = (
 				9D8866932F447BC7004614DE /* Huddle */,
+				9D7932AE2F46331C00929534 /* Frameworks */,
 				9D8866922F447BC7004614DE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,6 +85,7 @@
 				9D88668D2F447BC7004614DE /* Sources */,
 				9D88668E2F447BC7004614DE /* Frameworks */,
 				9D88668F2F447BC7004614DE /* Resources */,
+				9D7932B22F46331C00929534 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
