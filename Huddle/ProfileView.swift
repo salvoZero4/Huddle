@@ -30,11 +30,11 @@ struct ProfileView: View {
                                     .colorMultiply(.blue)
                                     .padding()
                                     .aspectRatio(contentMode: .fill)
-                                if user != nil{
-                                    Text(user!.userName)
+                                if let user {
+                                    Text(user.userName)
                                         .font(.system(size: 30))
                                         .fontWeight(.bold)
-                                    Text(user!.mail)
+                                    Text(user.mail)
                                         .padding([.bottom])
                                         .font(.system(size: 15))
                                         .foregroundColor(.blue)
@@ -56,30 +56,31 @@ struct ProfileView: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .fontWeight(.bold)
-                }.background(
+                }
+                .background(
                     RoundedRectangle(cornerRadius: 25)
-                    .fill(Color(.systemGray6))
+                        .fill(Color(.systemGray6))
                 )
                 VStack {
-                            Button("Logout") {
-                                showLogoutConfirmation = true
-                            }
-                            .foregroundStyle(.red)
-                            .fontWeight(.bold)
-                            .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
-                                Button("Accetta", role: .destructive) {
-                                    user = nil
-                                    print("Logout effettuato")
-                                }
-                                Button("Annulla", role: .cancel) { }
-                            }
-                            .padding()
+                    Button("Logout") {
+                        showLogoutConfirmation = true
+                    }
+                    .foregroundStyle(.red)
+                    .fontWeight(.bold)
+                    .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
+                        Button("Accetta", role: .destructive) {
+                            user = nil
+                            print("Logout effettuato")
                         }
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 25)
-                                .fill(Color(.systemGray6))
-                        )
+                        Button("Annulla", role: .cancel) { }
+                    }
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color(.systemGray6))
+                )
                 Spacer()
                 
                        
@@ -93,3 +94,4 @@ struct ProfileView: View {
 #Preview {
     ProfileView(user: User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it"))
 }
+
