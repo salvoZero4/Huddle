@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9D8866902F447BC7004614DE"
-               BuildableName = "Huddle.app"
-               BlueprintName = "Huddle"
+               BuildableName = "Hubble.app"
+               BlueprintName = "Hubble"
                ReferencedContainer = "container:Huddle.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9D8866902F447BC7004614DE"
-            BuildableName = "Huddle.app"
-            BlueprintName = "Huddle"
+            BuildableName = "Hubble.app"
+            BlueprintName = "Hubble"
             ReferencedContainer = "container:Huddle.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9D8866902F447BC7004614DE"
-            BuildableName = "Huddle.app"
-            BlueprintName = "Huddle"
+            BuildableName = "Hubble.app"
+            BlueprintName = "Hubble"
             ReferencedContainer = "container:Huddle.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
