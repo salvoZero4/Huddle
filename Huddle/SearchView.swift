@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct SearchView: View {
+    @Binding var Huddle: [Huddle]
+    @Binding var user: User
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    SearchView()
+    //SearchView(user: User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it"))
 }
