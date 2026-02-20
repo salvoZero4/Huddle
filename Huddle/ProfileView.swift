@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @State var user : User?
+    @Binding var user : User?
     @State private var showLogoutConfirmation = false
     var body: some View {
         VStack{
@@ -92,6 +92,6 @@ struct ProfileView: View {
     }
 }
 #Preview {
-    ProfileView(user: User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it"))
+    ProfileView(user: .constant(User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it")))
 }
 

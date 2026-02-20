@@ -28,7 +28,7 @@ struct EditProfileView: View {
 
             Button(action: {
                 if var currentUser = user {
-                    currentUser.setUserName(userName: userName)
+                    currentUser.userName = userName
                     user = currentUser
                 }
             }){

@@ -54,7 +54,7 @@ struct RegisterView: View {
                         hint: "Use your official email address"
                     ) {
                         CustomTextField(
-                            placeholder: "your.name@comunity.unipa.it",
+                            placeholder: "your.name@community.unipa.it",
                             text: $email,
                             icon: "envelope",
                             keyboardType: .emailAddress
