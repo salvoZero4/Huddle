@@ -14,8 +14,8 @@ struct CreateView: View {
     @State var room: String = ""
     @State var date: Date = Date()
     @State var description: String = ""
-    @State var linkWhatsapp: String = ""
-    @State var linkTelegram: String = ""
+    @State var linkW: String = ""
+    @State var linkT: String = ""
     let materieDisponiobili = ["Calculus", "Biology", "History", "Philosophy", "Sociology"]
     let edificiDisponibili = ["building 6", "building 7", "building 8", "building 9", "building 10"]
     
@@ -86,11 +86,11 @@ struct CreateView: View {
                         Spacer()
                     }
                 VStack {
-                    TextField("Insert Whatsapp Link: ", text: $linkWhatsapp)
+                    TextField("Insert Whatsapp Link: ", text: $linkW)
                         .padding(.vertical, 5)
                         .foregroundColor(.green)
                     Divider()
-                    TextField("Insert Telegram Link: ", text: $linkTelegram)
+                    TextField("Insert Telegram Link: ", text: $linkT)
                         .padding(.vertical, 5)
                         .foregroundColor(.cyan)
                 }
