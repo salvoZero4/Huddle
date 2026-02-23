@@ -12,7 +12,8 @@ struct ContentView: View {
     @State var selection: Int = 0
     @State var userCurrent = User(
         userName: "Daniele Giammarresi",
-        mail: "daniele.giammarresi@community.unipa.it"
+        mail: "daniele.giammarresi@community.unipa.it",
+        huddles: []
         )
     
     @State var huddles = [
@@ -23,12 +24,12 @@ struct ContentView: View {
                date: Calendar.current.date(from: DateComponents(year: 2026, month: 3, day: 20, hour: 10)) ?? Date(),
                linkW: "",
                linkT: "",
-               engineering: "Computer Science",
+               engineering: "Computer",
                users:
                 [User(userName: "Daniele Giammarresi",
-                      mail:"daniele.giammarresi@community.unipa.it"),
+                      mail:"daniele.giammarresi@community.unipa.it",huddles: []),
                  User(userName: "Gabriele Barone",
-                      mail: "gabriele.barone@community.unipa.it")
+                      mail: "gabriele.barone@community.unipa.it", huddles: [])
                 ]),
         
         Huddle(subject: "Physics",
@@ -38,12 +39,12 @@ struct ContentView: View {
                date: Calendar.current.date(from: DateComponents(year: 2026, month: 2, day: 28, hour: 17)) ?? Date(),
                linkW: "",
                linkT: "",
-               engineering: "Computer Science",
+               engineering: "Civil",
                users:
                 [User(userName: "Salvatore Scaravalle",
-                      mail:"salvatore.scaravalle@community.unipa.it"),
+                      mail:"salvatore.scaravalle@community.unipa.it",huddles: []),
                  User(userName: "Matteo Raimondi",
-                      mail: "matteo.raimondi@community.unipa.it")
+                      mail: "matteo.raimondi@community.unipa.it",huddles:[])
                 ])
     ]
     
@@ -96,6 +97,7 @@ struct User: Identifiable, Codable{
     var id = UUID()
     var userName: String
     var mail: String
+    var huddles: [Huddle]
 }
 
 struct Huddle: Identifiable,Codable{

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct CreateView: View {
+    @Environment(\.openURL) var openURL
     @State var engineering: String = "Select engineering"
     @State var subject: String = "Select subject"
     @State var building: String = "Select Building"
@@ -174,7 +175,7 @@ struct CreateView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(25)
                 Button(action:{
-                    //colegamenton con il link università
+                    openURL(URL(string:"https://offertaformativa.unipa.it/offweb/public/aula/aulaCalendar.seam")!)
                 }) {
                     Text("Check free rooms")
                         .frame(maxWidth: .infinity)
@@ -213,11 +214,18 @@ struct CreateView: View {
         VStack{
             Button(action: {
                 //logica del bottone
-                /* _ = Huddle(
+                 var _newHuddle = Huddle(
                  subject: subject,
                  building: building,
-                 room: room
-                 )*/
+                 room: room,
+                 description: description,
+                 date: date,
+                 linkW: linkWhatsapp,
+                 linkT: linkTelegram,
+                 engineering: engineering,
+                 users: []
+                 
+                 )
                 //Salvo qui i dati nell main
                 //DatabaseManager.shared.saveHuddle(nuovo: nuovoGruppo)
                 
