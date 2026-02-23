@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MyGroupView: View {
     var huddles: [Huddle]
+    @Binding var user: User
         var body: some View {
             NavigationStack {
             ScrollView {
@@ -23,7 +24,7 @@ struct MyGroupView: View {
                         .foregroundColor(.gray)
                     
                     ForEach(huddles) { huddle in
-                        NavigationLink(destination: DetailView(huddle: huddle)) {
+                        NavigationLink(destination: DetailView(huddle: huddle, user: $user),) {
                                                     HuddleCardView(huddle: huddle)
                                                 }
                     }
@@ -85,5 +86,5 @@ struct HuddleCardView: View {
                 User(userName: "Matteo Raimondi", mail: "matteo.raimondi@community.unipa.it",huddles:[])
             ]
         )
-    ])
+    ], user: .constant(User(userName: "daniele", mail: "daniele.giammaresi@community.unipa.it", huddles: [])))
 }

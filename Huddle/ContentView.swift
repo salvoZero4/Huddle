@@ -52,7 +52,7 @@ struct ContentView: View {
                 }
                 .tag(0)
             
-            MyGroupView(huddles: huddles)
+            MyGroupView(huddles: huddles, user: Binding($userCurrent)!)
                 .tabItem {
                     Label("My Huddle", systemImage: "person.2")
                 }

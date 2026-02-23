@@ -9,8 +9,9 @@ import Foundation
 import SwiftUI
 
 struct DetailView: View {
-    @State var huddle: Huddle //DISCUTERE RIGUARDO L'IDENTIFICATORE
     
+    @State var huddle: Huddle //DISCUTERE RIGUARDO L'IDENTIFICATORE
+    @Binding var user: User
     
     var body: some View {
         ScrollView {
@@ -113,5 +114,5 @@ struct DetailView: View {
             User(userName: "Salvatore Scaravalle", mail: "salvatore.scaravalle@community.unipa.it",huddles: []),
             User(userName: "Matteo Raimondi", mail: "matteo.raimondi@community.unipa.it",huddles: [])
         ]
-    ))
+    ),user: .constant(User(userName: "Daniele", mail: "daniele.giammaresi@community.unipa.it", huddles: [])))
 }

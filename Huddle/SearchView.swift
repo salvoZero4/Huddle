@@ -100,7 +100,7 @@ struct SearchView: View {
                                 .padding(.top, 40)
                         } else {
                             ForEach(filteredHuddles) { huddle in
-                                NavigationLink(destination: DetailView(huddle: huddle)) {
+                                NavigationLink(destination: DetailView(huddle: huddle,user: $user)) {
                                     HuddleCardView(huddle: huddle)
                                 }
                                 .buttonStyle(PlainButtonStyle())
