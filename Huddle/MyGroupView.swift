@@ -38,7 +38,7 @@ struct MyGroupView: View {
 
 //Singolo evento
 struct HuddleCardView: View {
-  //è costante perchre ci sono gia i dati
+  //è costante perchè ci sono gia i dati
     let huddle: Huddle
     
     var body: some View {
