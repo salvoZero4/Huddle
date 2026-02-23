@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct SearchView: View {
-    @Binding var Huddle: [Huddle]
+    @Binding var Huddles: [Huddle]
     @Binding var user: User
     var body: some View {
     }
 }
 
 #Preview {
-    //SearchView(user: User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it"))
+    //SearchView(user: .constant(User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it")))
 }
