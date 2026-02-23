@@ -96,9 +96,6 @@ struct Huddle: Identifiable, Codable, Equatable{
     var engineering: String
     var users: [User]
     
-    /*func isEqual (huddle: Huddle) -> Bool{
-        return self.id == huddle.id
-    }*/
 }
 
 #Preview {
