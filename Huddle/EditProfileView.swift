@@ -51,5 +51,5 @@ struct EditProfileView: View {
 }
 
 #Preview {
-    EditProfileView(user: .constant(User(userName: "userName", mail: "salvo")))
+    EditProfileView(user: .constant(User(userName: "userName", mail: "salvo", huddles: [])))
 }

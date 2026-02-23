@@ -81,8 +81,8 @@ struct HuddleCardView: View {
             linkT: "",
             engineering: "Computer Engineering",
             users: [
-                User(userName: "Salvatore Scaravalle", mail: "salvatore.scaravalle@community.unipa.it"),
-                User(userName: "Matteo Raimondi", mail: "matteo.raimondi@community.unipa.it")
+                User(userName: "Salvatore Scaravalle", mail: "salvatore.scaravalle@community.unipa.it",huddles: []),
+                User(userName: "Matteo Raimondi", mail: "matteo.raimondi@community.unipa.it",huddles:[])
             ]
         )
     ])

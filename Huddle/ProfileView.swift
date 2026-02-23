@@ -92,6 +92,6 @@ struct ProfileView: View {
     }
 }
 #Preview {
-    ProfileView(user: .constant(User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it")))
+    ProfileView(user: .constant(User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it",huddles:[])))
 }
 

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct CreateView: View {
+    @Environment(\.openURL) var openURL
     @State var engineering: String = "Select engineering"
     @State var subject: String = "Select subject"
     @State var building: String = "Select Building"
@@ -17,7 +18,71 @@ struct CreateView: View {
     @State var description: String = ""
     @State var linkWhatsapp: String = ""
     @State var linkTelegram: String = ""
-    let materieDisponiobili = ["Select subject","Calculus I", "Calculus II", "physics I", "Physics II", "Linear Algebra"]
+    let materieDisponibili: [String] = [""]
+    let materieComputer = ["Select subject","Calculus I","Calculus II","Physics I", "Physics II","Geometry","Algebra","Fundaments of Programming","Algorithms and Data Structures","Computer Architecture","Programming","Base of Data","Computer Networks and the Internet","Automatic controls","Signal theory","Electrical Engineering","Eletronics","Software Engineering", "Operating System", "Web and Mobile Programming" ]
+    let materieElectrical = [
+        "Select subject",
+        "Calculus I",
+        "Geometry and Algebra",
+        "Physics I",
+        "Fundamentals of Computer Science",
+        "Chemistry",
+        "Calculus II",
+        "Business Economics and Organization",
+        "Physics II",
+        "Electrical Engineering",
+        "Signal Theory",
+        "Electronic Devices",
+        "Mathematical and Numerical Methods",
+        "Analog Electronics",
+        "Electronic Measurements",
+        "Electromagnetic Fields",
+        "Digital Electronics",
+        "Automatic Control",
+        "Microprocessor System Architectures",
+        "Electronic Circuit Design"
+    ]
+    let materieMechanical = [
+        "Select subject",
+        "Calculus I",
+        "Geometry and Algebra",
+        "Physics I",
+        "Chemistry",
+        "Fundamentals of Computer Science",
+        "Industrial Technical Drawing",
+        "Calculus II",
+        "Physics II",
+        "Rational Mechanics",
+        "Applied Mechanics",
+        "Mechanics of Materials",
+        "Thermodynamics and Heat Transfer",
+        "Manufacturing Technology",
+        "Machine Design",
+        "Fluid Machines",
+        "Industrial Plants",
+        "Mechanical and Thermal Measurements"
+    ]
+    let materieCivil = [
+        "Select subject",
+        "Calculus I",
+        "Geometry and Algebra",
+        "Physics I",
+        "Chemistry",
+        "Fundamentals of Computer Science",
+        "Calculus II",
+        "Physics II",
+        "Rational Mechanics",
+        "Hydraulics",
+        "Mechanics of Materials",
+        "Geomatics",
+        "Structural Engineering",
+        "Geotechnics",
+        "Roads, Railways and Airports Construction",
+        "Environmental Engineering",
+        "Technical Architecture"
+    ]
+    
+    
     let edificiDisponibili = ["Select Building","building 6", "building 7", "building 8", "building 9", "building 10"]
     let facoltaIngegneristica = ["Select engineering","Computer", "Electrical", "Civil", "Mechanical"]
     
@@ -42,12 +107,39 @@ struct CreateView: View {
                         }
                     }
                     Divider()
-                    Picker("Subject", selection: $subject){
-                        ForEach(materieDisponiobili, id: \.self) {
-                            materia in Text(materia)
+                    if engineering == "Computer"{
+                        Picker("Subject", selection: $subject){
+                            ForEach(materieComputer, id: \.self) {
+                                materia in Text(materia)
+                            }.tint(.blue)
+                        }
+                    }else if(engineering == "Electrical"){
+                        Picker("Subject", selection: $subject){
+                            ForEach(materieElectrical, id: \.self) {
+                                materia in Text(materia)
+                            }.tint(.blue)
+                        }
+                    }else if(engineering == "Mechanical"){
+                        Picker("Subject", selection: $subject){
+                            ForEach(materieMechanical, id: \.self) {
+                                materia in Text(materia)
+                            }.tint(.blue)
+                        }
+                    }else if(engineering == "Civil"){
+                        Picker("Subject", selection: $subject){
+                            ForEach(materieCivil, id: \.self) {
+                                materia in Text(materia)
+                            }.tint(.blue)
+                        }
+                    }else{
+                        Picker("Subject", selection: $subject){
+                            ForEach(materieDisponibili, id: \.self) {
+                                materia in Text(materia)
+                            }.tint(.blue)
                         }
                     }
-                    .tint(.blue)
+                    
+                    
                     Divider()
                     TextField("Insert Huddle description", text: $description)
                         .padding(.vertical, 5)
@@ -83,7 +175,7 @@ struct CreateView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(25)
                 Button(action:{
-                    //colegamenton con il link università
+                    openURL(URL(string:"https://offertaformativa.unipa.it/offweb/public/aula/aulaCalendar.seam")!)
                 }) {
                     Text("Check free rooms")
                         .frame(maxWidth: .infinity)
@@ -122,11 +214,18 @@ struct CreateView: View {
         VStack{
             Button(action: {
                 //logica del bottone
-                /* _ = Huddle(
+                 var _newHuddle = Huddle(
                  subject: subject,
                  building: building,
-                 room: room
-                 )*/
+                 room: room,
+                 description: description,
+                 date: date,
+                 linkW: linkWhatsapp,
+                 linkT: linkTelegram,
+                 engineering: engineering,
+                 users: []
+                 
+                 )
                 //Salvo qui i dati nell main
                 //DatabaseManager.shared.saveHuddle(nuovo: nuovoGruppo)
                 
