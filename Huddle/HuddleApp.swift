@@ -1,17 +1,24 @@
-//
-//  HuddleApp.swift
-//  Huddle
-//
-//  Created by Salvatore Scaravalle on 17/02/26.
-//
-
 import SwiftUI
 
 @main
 struct HuddleApp: App {
+    
+    @StateObject private var session = SessionManager.shared
+    
+    init() {
+        // TEMP: Remove this line after testing is done
+        SessionManager.shared.clearSession()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if session.isLoggedIn {
+                ContentView()
+                    .environmentObject(session)
+            } else {
+                RegisterView()
+                    .environmentObject(session)
+            }
         }
     }
 }

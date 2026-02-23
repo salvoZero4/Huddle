@@ -1,6 +1,3 @@
-
-
-//
 //  RegisterView.swift
 //  Hubble
 //
@@ -11,9 +8,8 @@ import SwiftUI
 
 struct RegisterView: View {
     
-    @State private var username = ""
-    @State private var email = ""
-    @State private var verificationCode = ""
+    @StateObject private var vm = RegisterViewModel()
+    @EnvironmentObject private var session: SessionManager
     
     var body: some View {
         ScrollView {
@@ -26,6 +22,7 @@ struct RegisterView: View {
                     .frame(width: 80, height: 80)
                     .padding(.top, 80)
                     .padding(.bottom, 20)
+                
                 // MARK: - Title
                 Text("Welcome To Huddle")
                     .font(.system(size: 32, weight: .bold, design: .rounded))
@@ -43,7 +40,7 @@ struct RegisterView: View {
                     ) {
                         CustomTextField(
                             placeholder: "Choose a unique username",
-                            text: $username,
+                            text: $vm.username,
                             icon: "person"
                         )
                     }
@@ -55,7 +52,7 @@ struct RegisterView: View {
                     ) {
                         CustomTextField(
                             placeholder: "your.name@community.unipa.it",
-                            text: $email,
+                            text: $vm.email,
                             icon: "envelope",
                             keyboardType: .emailAddress
                         )
@@ -73,9 +70,8 @@ struct RegisterView: View {
                         }
                         
                         HStack(spacing: 10) {
-                            // Code input
                             HStack {
-                                TextField("Enter code from email", text: $verificationCode)
+                                TextField("Enter code from email", text: $vm.verificationCode)
                                     .font(.system(size: 15))
                                     .keyboardType(.numberPad)
                             }
@@ -84,42 +80,77 @@ struct RegisterView: View {
                             .background(Color(.systemGray6))
                             .cornerRadius(12)
                             
-                            // Send Code Button
                             Button(action: {
-                                print("Send verification code")
+                                Task { await vm.sendCode() }
                             }) {
-                                Text("Send Code")
-                                    .font(.system(size: 15, weight: .semibold))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 18)
-                                    .padding(.vertical, 14)
-                                    .background(Color.blue)
-                                    .cornerRadius(12)
+                                if vm.isLoading && !vm.codeSent {
+                                    ProgressView().tint(.white)
+                                        .padding(.horizontal, 18)
+                                        .padding(.vertical, 14)
+                                        .background(Color.blue)
+                                        .cornerRadius(12)
+                                } else {
+                                    Text(vm.codeSent ? "Resend" : "Send Code")
+                                        .font(.system(size: 15, weight: .semibold))
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 18)
+                                        .padding(.vertical, 14)
+                                        .background(Color.blue)
+                                        .cornerRadius(12)
+                                }
                             }
+                            .disabled(vm.isLoading)
                         }
                         
-                        Text("Click \"Send Code\" to receive verification")
-                            .font(.system(size: 13))
-                            .foregroundColor(.gray)
+                        // Status message under code field
+                        if let success = vm.successMessage {
+                            Text(success)
+                                .font(.system(size: 13))
+                                .foregroundColor(.green)
+                        } else {
+                            Text("Click \"Send Code\" to receive verification")
+                                .font(.system(size: 13))
+                                .foregroundColor(.gray)
+                        }
                     }
                 }
                 .padding(.horizontal, 24)
                 
                 // MARK: - Sign In Button
                 Button(action: {
-                    print("Sign In pressed")
+                    Task { await vm.submit() }
                 }) {
-                    Text("Sign In")
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 18)
-                        .background(Color.blue)
-                        .cornerRadius(16)
+                    if vm.isLoading && vm.codeSent {
+                        ProgressView().tint(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 18)
+                            .background(Color.blue)
+                            .cornerRadius(16)
+                    } else {
+                        Text("Sign In")
+                            .font(.system(size: 18, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 18)
+                            .background(Color.blue)
+                            .cornerRadius(16)
+                    }
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 36)
-                .padding(.bottom, 40)
+                .disabled(vm.isLoading)
+                
+                // MARK: - Error Message
+                if let error = vm.errorMessage {
+                    Text(error)
+                        .font(.system(size: 14))
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 12)
+                }
+                
+                Spacer().frame(height: 40)
             }
         }
         .background(Color.white)
@@ -181,4 +212,5 @@ struct CustomTextField: View {
 
 #Preview {
     RegisterView()
+        .environmentObject(SessionManager.shared)
 }
