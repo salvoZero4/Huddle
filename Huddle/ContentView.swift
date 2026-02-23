@@ -80,7 +80,11 @@ struct User: Identifiable, Codable {
     var huddles: [Huddle]
 }
 
-struct Huddle: Identifiable, Codable {
+struct Huddle: Identifiable, Codable, Equatable{
+    static func == (lhs: Huddle, rhs: Huddle) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     var id = UUID()
     var subject: String
     var building: String
@@ -91,6 +95,10 @@ struct Huddle: Identifiable, Codable {
     var linkT: String
     var engineering: String
     var users: [User]
+    
+    /*func isEqual (huddle: Huddle) -> Bool{
+        return self.id == huddle.id
+    }*/
 }
 
 #Preview {

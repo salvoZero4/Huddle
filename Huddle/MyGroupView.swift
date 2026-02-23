@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct MyGroupView: View {
-    var huddles: [Huddle]
+    @State var huddles: [Huddle]
     @Binding var user: User
         var body: some View {
             NavigationStack {

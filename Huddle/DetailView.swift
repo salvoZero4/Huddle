@@ -10,8 +10,11 @@ import SwiftUI
 
 struct DetailView: View {
     
+    @Environment(\.openURL) var openURL
     @State var huddle: Huddle //DISCUTERE RIGUARDO L'IDENTIFICATORE
     @Binding var user: User
+    
+    //var asJoined = user.huddles.contains()
     
     var body: some View {
         ScrollView {
@@ -51,35 +54,56 @@ struct DetailView: View {
                     Text("\(huddle.description)")
                         .padding()
                     Divider()
-                    Button(action: {
-                        //azione del bottone join
-                    }) {
-                        Label("Join the Huddle", systemImage: "plus.circle.fill")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color(.systemBlue))
-                            .foregroundColor(.white)
-                            .cornerRadius(25)
+                    //var huddle_ =
+                    if !user.huddles.contains(huddle)
+                    {
+                        Button(action: {
+                            user.huddles.append(huddle)
+                        }) {
+                            Label("Join the Huddle", systemImage: "plus.circle.fill")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(.systemBlue))
+                                .foregroundColor(.white)
+                                .cornerRadius(25)
+                        }
+
+                    }else{
+                        Button(action: {
+                            user.huddles.removeAll { $0.id == huddle.id }
+                        }) {
+                            Label("Huddle Joined", systemImage: "plus.circle.fill")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(.systemBlue))
+                                .foregroundColor(.white)
+                                .cornerRadius(25)
+                        }
                     }
-                    Button(action: {
-                        //azione bottone whatsapp
-                    }) {
-                        Label("Whatsapp Group", systemImage: "message.fill")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color(.systemGreen))
-                            .foregroundColor(.white)
-                            .cornerRadius(25)
+                    
+                    if huddle.linkW != ""{
+                        Button(action: {
+                            openURL(URL(string:huddle.linkW)!)
+                        }) {
+                            Label("Whatsapp Group", systemImage: "message.fill")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(.systemGreen))
+                                .foregroundColor(.white)
+                                .cornerRadius(25)
+                        }
                     }
-                    Button(action: {
-                        //azione bottone Telegram
-                    }) {
-                        Label("Telegram Group", systemImage: "message.fill")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color(.systemCyan))
-                            .foregroundColor(.white)
-                            .cornerRadius(25)
+                    if huddle.linkT != ""{
+                        Button(action: {
+                            openURL(URL(string:huddle.linkT)!)
+                        }) {
+                            Label("Telegram Group", systemImage: "message.fill")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(.systemCyan))
+                                .foregroundColor(.white)
+                                .cornerRadius(25)
+                        }
                     }
                     
                     
