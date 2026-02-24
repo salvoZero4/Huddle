@@ -1,97 +1,129 @@
 //
 //  ProfileView.swift
-//  
 //
 //  Created by Daniele Giammarresi on 18/02/26.
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ProfileView: View {
-    @Binding var user : User?
+    @Binding var user: User?
+    @EnvironmentObject private var session: SessionManager
     @State private var showLogoutConfirmation = false
+    @State private var selectedPhoto: PhotosPickerItem? = nil
+    @State private var profileImage: Image? = nil
+    
     var body: some View {
-        VStack{
+        VStack(spacing: 16) {
             
             Text("My Profile")
-                .padding()
                 .font(.system(size: 20))
                 .fontWeight(.bold)
-            NavigationStack{
-                VStack{
-                    VStack{
-                        HStack{
+                .padding(.top)
+            
+            NavigationStack {
+                VStack(spacing: 12) {
+                    
+                    // MARK: - Avatar + Info
+                    VStack {
+                        HStack {
                             Spacer()
-                            VStack{
-                                Image(systemName: "person.circle.fill")
-                                    .resizable()
-                                    .frame(width: 80, height: 80)
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                                    .colorMultiply(.blue)
-                                    .padding()
-                                    .aspectRatio(contentMode: .fill)
-                                if let user {
-                                    Text(user.userName)
-                                        .font(.system(size: 30))
-                                        .fontWeight(.bold)
-                                    Text(user.mail)
-                                        .padding([.bottom])
-                                        .font(.system(size: 15))
-                                        .foregroundColor(.blue)
-                                        .fontWeight(.bold)
+                            VStack(spacing: 8) {
+                                
+                                // Profile Photo
+                                PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                                    ZStack(alignment: .bottomTrailing) {
+                                        if let profileImage {
+                                            profileImage
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 90, height: 90)
+                                                .clipShape(Circle())
+                                        } else {
+                                            Image(systemName: "person.circle.fill")
+                                                .resizable()
+                                                .frame(width: 90, height: 90)
+                                                .foregroundColor(.blue)
+                                        }
+                                        Image(systemName: "pencil.circle.fill")
+                                            .foregroundColor(.blue)
+                                            .background(Color.white)
+                                            .clipShape(Circle())
+                                            .offset(x: 4, y: 4)
+                                    }
                                 }
+                                .padding(.top)
+                                .onChange(of: selectedPhoto) { newItem in
+                                    Task {
+                                        if let data = try? await newItem?.loadTransferable(type: Data.self),
+                                           let uiImage = UIImage(data: data) {
+                                            profileImage = Image(uiImage: uiImage)
+                                        }
+                                    }
+                                }
+                                
+                                // Name and email from session
+                                Text(session.currentUsername ?? user?.userName ?? "Unknown")
+                                    .font(.system(size: 28))
+                                    .fontWeight(.bold)
+                                
+                                Text(session.currentEmail ?? user?.mail ?? "")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.blue)
+                                    .fontWeight(.bold)
+                                    .padding(.bottom)
                             }
                             Spacer()
                         }
-                        
-                        
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color(.systemGray6))
-                    )
-                }
-                NavigationLink(destination: EditProfileView(user: $user)){
-                    Text("Edit Profile")
+                    .background(RoundedRectangle(cornerRadius: 25).fill(Color(.systemGray6)))
+                    
+                    // MARK: - Edit Profile
+                    NavigationLink(destination: EditProfileView(user: $user)) {
+                        HStack {
+                            Image(systemName: "pencil")
+                                .foregroundColor(.primary)
+                            Text("Edit Profile")
+                                .fontWeight(.bold)
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                        }
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .fontWeight(.bold)
-                }
-                .background(
-                    RoundedRectangle(cornerRadius: 25)
-                        .fill(Color(.systemGray6))
-                )
-                VStack {
-                    Button("Logout") {
+                    }
+                    .background(RoundedRectangle(cornerRadius: 25).fill(Color(.systemGray6)))
+                    
+                    // MARK: - Logout
+                    Button(action: {
                         showLogoutConfirmation = true
+                    }) {
+                        Text("Exit (Logout)")
+                            .fontWeight(.bold)
+                            .foregroundColor(.red)
+                            .padding()
+                            .frame(maxWidth: .infinity)
                     }
-                    .foregroundStyle(.red)
-                    .fontWeight(.bold)
-                    .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
-                        Button("Accetta", role: .destructive) {
-                            user = nil
-                            print("Logout effettuato")
+                    .background(RoundedRectangle(cornerRadius: 25).fill(Color(.systemGray6)))
+                    .alert("Are you sure you want to logout?", isPresented: $showLogoutConfirmation) {
+                        Button("Logout", role: .destructive) {
+                            session.clearSession()
                         }
-                        Button("Annulla", role: .cancel) { }
+                        Button("Cancel", role: .cancel) { }
                     }
+                    
+                    Spacer()
                 }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 25)
-                        .fill(Color(.systemGray6))
-                )
-                Spacer()
-                
-                       
+                .padding(.horizontal)
             }
-            
-            
         }
-        .padding()
+        .padding(.horizontal)
     }
 }
+
 #Preview {
     ProfileView(user: .constant(User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it")))
+        .environmentObject(SessionManager.shared)
 }
-
