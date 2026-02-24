@@ -104,8 +104,14 @@ class RegisterViewModel: ObservableObject {
             return
         }
         
+        // Save email -> username in users tag
         let _ = db.writeSync(team: team, tag: tag, key: email, value: username)
+        // Save username index
         let _ = db.writeSync(team: team, tag: "usernames", key: username.lowercased(), value: email)
+        
+        // Save full User object in HuddleService
+        let newUser = User(userName: username, mail: email, huddles: [])
+        let _ = HuddleService.shared.updateUser(utenteAggiornato: newUser)
         
         session.saveSession(email: email, username: username)
         isLoading = false
@@ -115,8 +121,19 @@ class RegisterViewModel: ObservableObject {
     private func login() async {
         isLoading = true
         
+        // Update username
         let _ = db.writeSync(team: team, tag: tag, key: email, value: username)
         let _ = db.writeSync(team: team, tag: "usernames", key: username.lowercased(), value: email)
+        
+        // Fetch existing user to preserve their huddles, update username
+        if var existingUser = HuddleService.shared.fetchUser(email: email) {
+            existingUser.userName = username
+            let _ = HuddleService.shared.updateUser(utenteAggiornato: existingUser)
+        } else {
+            // First login, create user
+            let newUser = User(userName: username, mail: email, huddles: [])
+            let _ = HuddleService.shared.updateUser(utenteAggiornato: newUser)
+        }
         
         session.saveSession(email: email, username: username)
         isLoading = false

@@ -1,6 +1,6 @@
 //
 //  ProfileView.swift
-//  
+//  Huddle
 //
 //  Created by Daniele Giammarresi on 18/02/26.
 //
@@ -9,21 +9,23 @@ import Foundation
 import SwiftUI
 
 struct ProfileView: View {
-    @State var user : User?
+    @EnvironmentObject private var session: SessionManager
     @State private var showLogoutConfirmation = false
+    @State private var user: User? = nil
+    
     var body: some View {
-        VStack{
-            
+        VStack {
             Text("My Profile")
                 .padding()
                 .font(.system(size: 20))
                 .fontWeight(.bold)
-            NavigationStack{
-                VStack{
-                    VStack{
-                        HStack{
+            
+            NavigationStack {
+                VStack {
+                    VStack {
+                        HStack {
                             Spacer()
-                            VStack{
+                            VStack {
                                 Image(systemName: "person.circle.fill")
                                     .resizable()
                                     .frame(width: 80, height: 80)
@@ -31,66 +33,71 @@ struct ProfileView: View {
                                     .colorMultiply(.blue)
                                     .padding()
                                     .aspectRatio(contentMode: .fill)
-                                if user != nil{
-                                    Text(user!.userName)
-                                        .font(.system(size: 30))
-                                        .fontWeight(.bold)
-                                    Text(user!.mail)
-                                        .padding([.bottom])
-                                        .font(.system(size: 15))
-                                        .foregroundColor(.blue)
-                                        .fontWeight(.bold)
-                                }
+                                
+                                Text(session.currentUsername ?? "Unknown")
+                                    .font(.system(size: 30))
+                                    .fontWeight(.bold)
+                                
+                                Text(session.currentEmail ?? "")
+                                    .padding([.bottom])
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.blue)
+                                    .fontWeight(.bold)
                             }
                             Spacer()
                         }
-                        
-                        
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 25)
                             .fill(Color(.systemGray6))
                     )
                 }
-                NavigationLink(destination: EditProfileView(user: $user)){
+                
+                NavigationLink(destination: EditProfileView(user: $user)) {
                     Text("Edit Profile")
                         .padding()
                         .frame(maxWidth: .infinity)
                         .fontWeight(.bold)
-                }.background(
+                }
+                .background(
                     RoundedRectangle(cornerRadius: 25)
-                    .fill(Color(.systemGray6))
+                        .fill(Color(.systemGray6))
                 )
-                VStack {
-                            Button("Logout") {
-                                showLogoutConfirmation = true
-                            }
-                            .foregroundStyle(.red)
-                            .fontWeight(.bold)
-                            .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
-                                Button("Accetta", role: .destructive) {
-                                    user = nil
-                                    print("Logout effettuato")
-                                }
-                                Button("Annulla", role: .cancel) { }
-                            }
-                            .padding()
-                        }
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 25)
-                                .fill(Color(.systemGray6))
-                        )
-                Spacer()
                 
-                       
+                VStack {
+                    Button("Logout") {
+                        showLogoutConfirmation = true
+                    }
+                    .foregroundStyle(.red)
+                    .fontWeight(.bold)
+                    .alert("Are you sure you want to logout?", isPresented: $showLogoutConfirmation) {
+                        Button("Logout", role: .destructive) {
+                            session.clearSession()
+                        }
+                        Button("Cancel", role: .cancel) { }
+                    }
+                    .padding()
+                }
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color(.systemGray6))
+                )
+                
+                Spacer()
             }
-            
-            
         }
         .padding()
+        .onAppear {
+            // Load full user from ParthenoKit
+            if let email = session.currentEmail {
+                user = HuddleService.shared.fetchUser(email: email)
+            }
+        }
     }
 }
+
 #Preview {
-    ProfileView(user: User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it", huddles: []))
+    ProfileView()
+        .environmentObject(SessionManager.shared)
 }
