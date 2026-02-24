@@ -5,41 +5,46 @@
 //  Created by Daniele Giammarresi on 18/02/26.
 //
 
-import Foundation
 import SwiftUI
 
 struct MyGroupView: View {
-    @State var huddles: [Huddle]
     @Binding var user: User
-        var body: some View {
-            NavigationStack {
+    @State var huddles: [Huddle] // 1. Aggiunto @State per farla aggiornare da sola
+    
+    
+    
+    var body: some View {
+        NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 15) {
-                    Text("My Huddle")
-                        .font(.largeTitle).bold()
-                        .foregroundColor(.blue)
-                    
+                VStack(alignment: .leading) {
                     Text("In Progress")
                         .font(.title2).bold()
                         .foregroundColor(.gray)
+                        .padding(.horizontal)
                     
-                    ForEach(huddles) { huddle in
-                        NavigationLink(destination: DetailView(huddle: huddle, user: $user),) {
-                                                    HuddleCardView(huddle: huddle)
-                                                }
+                    // 3. USIAMO LA LISTA FILTRATA (mieiHuddle) AL POSTO DI QUELLA GENERALE
+                    ForEach(user.huddles) { huddle in
+                        NavigationLink(destination: DetailView(user: $user, huddle: huddle)) {
+                            HuddleCardView(huddle: huddle)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .navigationTitle("My Group")
+            // 4. RICARICA I DATI FRESCHI OGNI VOLTA CHE APRI LA SCHERMATA
+            //.onAppear {
+              //  self.huddles = //HuddleService.shared.fetchAllHuddles()
             }
         }
     }
-}
+//}
 
 //Singolo evento
 struct HuddleCardView: View {
-  //è costante perchè ci sono gia i dati
+  //è costante perchre ci sono gia i dati
     let huddle: Huddle
     
     var body: some View {
@@ -71,20 +76,23 @@ struct HuddleCardView: View {
 }
 
 #Preview {
-    MyGroupView(huddles: [
-        Huddle(
-            subject: "Physics",
-            building: "Building 9",
-            room: "U010",
-            description: "Let's study the first 50 pages of the new chapter. Bring your notes!",
-            date: Calendar.current.date(from: DateComponents(year: 2026, month: 2, day: 28, hour: 17)) ?? Date(),
-            linkW: "",
-            linkT: "",
-            engineering: "Computer Engineering",
-            users: [
-                User(userName: "Salvatore Scaravalle", mail: "salvatore.scaravalle@community.unipa.it",huddles: []),
-                User(userName: "Matteo Raimondi", mail: "matteo.raimondi@community.unipa.it",huddles:[])
-            ]
-        )
-    ], user: .constant(User(userName: "daniele", mail: "daniele.giammaresi@community.unipa.it", huddles: [])))
+    MyGroupView(
+        user: .constant(User(userName: "Daniele", mail: "daniele@community.unipa.it", huddles: [])),
+        huddles: [
+            Huddle(
+                subject: "Physics",
+                building: "Building 9",
+                room: "U010",
+                description: "Let's study the first 50 pages of the new chapter. Bring your notes!",
+                date: Calendar.current.date(from: DateComponents(year: 2026, month: 2, day: 28, hour: 17)) ?? Date(),
+                linkW: "",
+                linkT: "",
+                engineering: "Computer Engineering",
+                users: [
+                    User(userName: "Salvatore Scaravalle", mail: "salvatore.scaravalle@community.unipa.it", huddles: []),
+                    User(userName: "Matteo Raimondi", mail: "matteo.raimondi@community.unipa.it", huddles: [])
+                ]
+            )
+        ]
+    )
 }

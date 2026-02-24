@@ -6,81 +6,70 @@
 //
 
 import SwiftUI
+import Foundation
+
+struct EngineeringCategory: Identifiable {
+    let id = UUID()
+    let name: String
+    let icon: String
+    let color: Color
+}
+
+let engCategories = [
+    EngineeringCategory(name: "Computer", icon: "desktopcomputer", color: .cyan),
+    EngineeringCategory(name: "Management", icon: "chart.bar.fill", color: .green),
+    EngineeringCategory(name: "Electronic", icon: "bolt.fill", color: .orange),
+    EngineeringCategory(name: "Civil", icon: "building.2.fill", color: .gray),
+    EngineeringCategory(name: "Biomedical", icon: "heart.text.square.fill", color: .red),
+    EngineeringCategory(name: "Mechanical", icon: "gearshape.fill", color: .blue)
+]
 
 struct SearchView: View {
-    @Binding var huddles: [Huddle]
+    @State var huddles: [Huddle] = []
     @Binding var user: User
-    
     @State private var searchText = ""
     @State private var selectedCategory: String? = nil
     
-    let categories: [(String, String, Color)] = [
-        ("All",           "square.grid.2x2",      Color.gray),
-        ("Calculus",      "function",              Color.blue),
-        ("Physics",       "atom",                  Color.orange),
-        ("Computer",      "desktopcomputer",        Color.green),
-        ("Medicine",      "cross.case.fill",        Color.red),
-        ("Biology",       "leaf.fill",              Color.teal),
-        ("Chemistry",     "flask.fill",             Color.purple),
-        ("Design",        "paintbrush.fill",        Color.pink),
-        ("Linear Algebra","sum",                    Color.indigo),
-        ("Data Mining",   "chart.dots.scatter",     Color.cyan)
-    ]
-    
+    // VARIABILE CALCOLATA PER I FILTRI
     var filteredHuddles: [Huddle] {
-        huddles.filter { huddle in
-            let matchesSearch = searchText.isEmpty ||
-                huddle.subject.localizedCaseInsensitiveContains(searchText) ||
-                huddle.engineering.localizedCaseInsensitiveContains(searchText)
-            let matchesCategory = selectedCategory == nil ||
-                huddle.subject.localizedCaseInsensitiveContains(selectedCategory!) ||
-                huddle.engineering.localizedCaseInsensitiveContains(selectedCategory!)
-            return matchesSearch && matchesCategory
+        var result = huddles
+        
+        if let category = selectedCategory {
+            result = result.filter { $0.subject == category || $0.engineering == category }
         }
+        
+        if !searchText.isEmpty {
+            result = result.filter { $0.subject.lowercased().contains(searchText.lowercased()) }
+        }
+        
+        return result
     }
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 20) {
                     
-                    // MARK: - Title
-                    Text("Explore Huddle")
-                        .font(.largeTitle).bold()
-                        .padding(.horizontal)
-                    
-                    // MARK: - Category Pills
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 16) {
-                            ForEach(categories, id: \.0) { name, icon, color in
-                                VStack(spacing: 6) {
-                                    Button(action: {
-                                        if name == "All" {
-                                            selectedCategory = nil
-                                        } else {
-                                            selectedCategory = selectedCategory == name ? nil : name
-                                        }
-                                    }) {
-                                        Image(systemName: icon)
-                                            .font(.system(size: 24))
-                                            .foregroundColor(.white)
-                                            .frame(width: 60, height: 60)
-                                            .background(
-                                                (name == "All" && selectedCategory == nil) || selectedCategory == name
-                                                    ? color.opacity(0.5) : color
-                                            )
-                                            .cornerRadius(16)
-                                    }
-                                    Text(name)
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
+                    // HEADER
+                    HStack {
+                        Image(systemName: "book.circle.fill")
+                            .font(.system(size: 45))
+                            .foregroundColor(.blue)
+                        
+                        Text("Hello \(user.userName)!")
+                            .font(.title2).bold()
+                            .fontWeight(.medium)
+                        
+                        Spacer()
                     }
-                    
-                    // MARK: - Search Bar
+                    .padding(.horizontal)
+
+                    Text("Explore Huddle")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding(.horizontal)
+
+                    // BARRA DI RICERCA
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
@@ -88,29 +77,121 @@ struct SearchView: View {
                     }
                     .padding(12)
                     .background(Color(.systemGray6))
-                    .cornerRadius(12)
+                    .cornerRadius(15)
                     .padding(.horizontal)
-                    
-                    // MARK: - Results
-                    VStack(spacing: 12) {
-                        if filteredHuddles.isEmpty {
-                            Text("No huddles found")
-                                .foregroundColor(.gray)
-                                .frame(maxWidth: .infinity)
-                                .padding(.top, 40)
-                        } else {
-                            ForEach(filteredHuddles) { huddle in
-                                NavigationLink(destination: DetailView(huddle: huddle,user: $user)) {
-                                    HuddleCardView(huddle: huddle)
+
+                    // CATEGORIE INGEGNERIA
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 15) {
+                            ForEach(engCategories) { category in
+                                Button(action: {
+                                    if selectedCategory == category.name {
+                                        selectedCategory = nil
+                                    } else {
+                                        selectedCategory = category.name
+                                    }
+                                }) {
+                                    CategoryButton(
+                                        icon: category.icon,
+                                        title: category.name,
+                                        color: selectedCategory == category.name ? category.color : .blue.opacity(0.3)
+                                    )
                                 }
-                                .buttonStyle(PlainButtonStyle())
                             }
+                        }
+                        .padding(.horizontal)
+                    }
+
+                    // LISTA DEGLI HUDDLE
+                    VStack(spacing: 16) {
+                        ForEach(filteredHuddles) { huddle in
+                            NavigationLink(destination: DetailView(user: $user, huddle: huddle)) {
+                                HuddleCard(huddle: huddle)
+                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                     .padding(.horizontal)
                 }
                 .padding(.top)
             }
+            .onAppear {
+                // Appena si apre la schermata, scarica i dati da ParthenoKit!
+                self.huddles = HuddleService.shared.fetchAllHuddles()
+            }
         }
     }
+}
+
+struct CategoryButton: View {
+    var icon: String
+    var title: String
+    var color: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.title)
+                .foregroundColor(.white)
+                .frame(width: 70, height: 70)
+                .background(color)
+                .cornerRadius(20)
+            
+            Text(title)
+                .font(.caption)
+                .bold()
+                .foregroundColor(.primary)
+        }
+    }
+}
+
+struct HuddleCard: View {
+    let huddle: Huddle
+    
+    var body: some View {
+        HStack(spacing: 15) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.blue.opacity(0.1))
+                    .frame(width: 60, height: 60)
+                Image(systemName: "person.3.fill")
+                    .foregroundColor(.blue)
+                    .font(.title2)
+            }
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(huddle.engineering)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                
+                Text(huddle.subject)
+                    .font(.headline)
+                
+                HStack(spacing: 4) {
+                    Image(systemName: "mappin.and.ellipse")
+                    Text("\(huddle.building) \(huddle.room)")
+                }
+                .font(.caption2)
+                .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Text(huddle.date, format: .dateTime.hour().minute())
+                .font(.system(size: 14, weight: .bold))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(Color(.systemGray5))
+                .cornerRadius(10)
+        }
+        .padding()
+        .background(Color(.systemGray6).opacity(0.4))
+        .cornerRadius(20)
+    }
+}
+
+#Preview {
+    SearchView(
+        user: .constant(User(userName: "Daniele", mail: "daniele@community.unipa.it", huddles: []))
+    )
 }

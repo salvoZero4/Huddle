@@ -7,80 +7,31 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    
-    @EnvironmentObject private var session: SessionManager
-    @State var selection: Int = 0
-    @State var userCurrent: User? = nil
-    
-    @State var huddles = [
-        Huddle(subject: "Calculus I", building: "Building 6", room: "A330",
-               description: "Let's do a general recap",
-               date: Calendar.current.date(from: DateComponents(year: 2026, month: 3, day: 20, hour: 10)) ?? Date(),
-               linkW: "",
-               linkT: "",
-               engineering: "Computer",
-               users:
-                [User(userName: "Daniele Giammarresi",
-                      mail:"daniele.giammarresi@community.unipa.it", huddles: []),
-                 User(userName: "Gabriele Barone",
-                      mail: "gabriele.barone@community.unipa.it", huddles: [])
-                ]),
-        
-        Huddle(subject: "Physics I", building: "Building 9", room: "U010",
-               description: "Let's study the first 50 pages",
-               date: Calendar.current.date(from: DateComponents(year: 2026, month: 2, day: 28, hour: 17)) ?? Date(),
-               linkW: "",
-               linkT: "",
-               engineering: "Civil",
-               users:
-                [User(userName: "Salvatore Scaravalle",
-                      mail:"salvatore.scaravalle@community.unipa.it", huddles: []),
-                 User(userName: "Matteo Raimondi",
-                      mail: "matteo.raimondi@community.unipa.it", huddles:[])
-                ])
-    ]
-    
-    var body: some View {
-        TabView(selection: $selection) {
-            SearchView(huddles: $huddles, user: Binding($userCurrent) ?? .constant(User(userName: "", mail: "", huddles: [])))
-                .tabItem {
-                    Label("Explore", systemImage: "magnifyingglass")
-                }
-                .tag(0)
-            
-            MyGroupView(huddles: huddles, user: Binding($userCurrent) ?? .constant(User(userName: "", mail: "", huddles: [])))
-                .tabItem {
-                    Label("My Huddle", systemImage: "person.2")
-                }
-                .tag(1)
-            
-            CreateView()
-                .tabItem {
-                    Label("Add", systemImage: "plus.circle")
-                }
-                .tag(2)
-            
-            ProfileView(user: $userCurrent)
-                .tabItem {
-                    Label("Profile", systemImage: "person.crop.circle")
-                }
-                .tag(3)
-        }
-        .onAppear {
-            syncUserFromSession()
-        }
-        .onChange(of: session.currentUsername) { _, _ in
-            syncUserFromSession()
+    struct ContentView: View {
+        @State private var user = User(userName: "test", mail: "test@test.com", huddles: [])
+        @State private var huddles: [Huddle] = []
+        var body: some View {
+            TabView {
+                SearchView(huddles: huddles, user: $user)
+                    .tabItem {
+                        Label("Explore", systemImage: "magnifyingglass")
+                    }
+                
+                MyGroupView(user: $user, huddles: huddles)
+                    .tabItem {
+                        Label("My Group", systemImage: "person.2.fill")
+                    }
+                CreateView(user: $user)
+                    .tabItem {
+                        Label("Create", systemImage: "plus.circle")
+                    }
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage: "person.fill")
+                    }
+            }
         }
     }
-    
-    private func syncUserFromSession() {
-        guard let email = session.currentEmail,
-              let username = session.currentUsername else { return }
-        userCurrent = User(userName: username, mail: email, huddles: [])
-    }
-}
 
 struct User: Identifiable, Codable {
     var id = UUID()
@@ -103,10 +54,21 @@ struct Huddle: Identifiable, Codable, Equatable {
     var linkW: String
     var linkT: String
     var engineering: String
+    var counter = 0
     var users: [User]
+    
+    mutating func setBuilding(building: String) { self.building = building }
+    mutating func setRoom(room: String) { self.room = room }
+    mutating func setSubject(subject: String) { self.subject = subject }
+    
+    // Ecco come completare la funzione che avevi lasciato in sospeso
+    mutating func setDate(date: Date) {
+        self.date = date
+    }
 }
+
+
 
 #Preview {
     ContentView()
-        .environmentObject(SessionManager.shared)
 }
