@@ -1,5 +1,5 @@
 //  RegisterView.swift
-//  Hubble
+//  Huddle
 //
 //  Created by Yasmine Ghomrassi on 19/02/26.
 //
@@ -7,15 +7,125 @@
 import SwiftUI
 
 struct RegisterView: View {
-    
     @StateObject private var vm = RegisterViewModel()
+    @EnvironmentObject private var session: SessionManager
+    @State private var onboardingComplete = false
+    
+    var body: some View {
+        if onboardingComplete {
+            RegisterFormView(vm: vm)
+                .environmentObject(session)
+        } else {
+            OnboardingWizardView(onboardingComplete: $onboardingComplete)
+        }
+    }
+}
+
+// MARK: - Onboarding Wizard
+struct OnboardingWizardView: View {
+    @Binding var onboardingComplete: Bool
+    
+    let slides: [(image: String, title: String, description: String)] = [
+        (
+            image: "wizard_1",
+            title: "Find Study Groups",
+            description: "Discover huddles created by students in your faculty. Filter by subject and join the ones that fit you."
+        ),
+        (
+            image: "wizard_2",
+            title: "Create Your Huddle",
+            description: "Organize a study session, pick a room, set a date and invite your classmates to join."
+        ),
+        (
+            image: "wizard_3",
+            title: "Connect & Collaborate",
+            description: "Share WhatsApp or Telegram links with your group and stay connected with your study partners."
+        )
+    ]
+    
+    var body: some View {
+        GeometryReader { geo in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 0) {
+                    ForEach(0..<slides.count, id: \.self) { index in
+                        ZStack(alignment: .bottom) {
+                            
+                            Image(slides[index].image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: geo.size.width, height: geo.size.height)
+                                .clipped()
+                            
+                            LinearGradient(
+                                colors: [Color.clear, Color.black.opacity(0.75)],
+                                startPoint: .center,
+                                endPoint: .bottom
+                            )
+                            .frame(width: geo.size.width, height: geo.size.height)
+                            
+                            VStack(spacing: 12) {
+                                Text(slides[index].title)
+                                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                
+                                Text(slides[index].description)
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.white.opacity(0.85))
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 24)
+                                
+                                if index == slides.count - 1 {
+                                    Button(action: {
+                                        withAnimation {
+                                            onboardingComplete = true
+                                        }
+                                    }) {
+                                        Text("Get Started")
+                                            .fontWeight(.bold)
+                                            .frame(maxWidth: .infinity)
+                                            .padding()
+                                            .background(Color.blue)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(15)
+                                            .shadow(radius: 5)
+                                    }
+                                    .padding(.horizontal, 32)
+                                    .padding(.top, 8)
+                                } else {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(.white.opacity(0.7))
+                                            .font(.system(size: 20))
+                                        Text("Swipe")
+                                            .font(.caption)
+                                            .foregroundColor(.white.opacity(0.6))
+                                    }
+                                    .padding(.top, 8)
+                                }
+                            }
+                            .padding(.bottom, 60)
+                        }
+                        .frame(width: geo.size.width, height: geo.size.height)
+                    }
+                }
+            }
+            .ignoresSafeArea()
+            .scrollTargetBehavior(.paging)
+        }
+        .ignoresSafeArea()
+    }
+}
+
+// MARK: - Register Form
+struct RegisterFormView: View {
+    @ObservedObject var vm: RegisterViewModel
     @EnvironmentObject private var session: SessionManager
     
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 
-                // MARK: - Logo
                 Image("HuddleLogo")
                     .resizable()
                     .scaledToFit()
@@ -23,17 +133,14 @@ struct RegisterView: View {
                     .padding(.top, 80)
                     .padding(.bottom, 20)
                 
-                // MARK: - Title
                 Text("Welcome To Huddle")
                     .font(.system(size: 32, weight: .bold, design: .rounded))
                     .foregroundColor(.black)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 36)
                 
-                // MARK: - Form Fields
                 VStack(spacing: 22) {
                     
-                    // Username Field
                     FieldGroup(
                         label: "Username",
                         hint: "3-20 characters, letters and numbers only"
@@ -45,7 +152,6 @@ struct RegisterView: View {
                         )
                     }
                     
-                    // Email Field
                     FieldGroup(
                         label: "University Email",
                         hint: "Use your official email address"
@@ -58,7 +164,6 @@ struct RegisterView: View {
                         )
                     }
                     
-                    // Verification Code Field
                     VStack(alignment: .leading, spacing: 6) {
                         HStack(spacing: 4) {
                             Text("Verification Code")
@@ -70,15 +175,13 @@ struct RegisterView: View {
                         }
                         
                         HStack(spacing: 10) {
-                            HStack {
-                                TextField("Enter code from email", text: $vm.verificationCode)
-                                    .font(.system(size: 15))
-                                    .keyboardType(.numberPad)
-                            }
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 14)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(12)
+                            TextField("Enter code from email", text: $vm.verificationCode)
+                                .font(.system(size: 15))
+                                .keyboardType(.numberPad)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 14)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
                             
                             Button(action: {
                                 Task { await vm.sendCode() }
@@ -102,7 +205,6 @@ struct RegisterView: View {
                             .disabled(vm.isLoading)
                         }
                         
-                        // Status message under code field
                         if let success = vm.successMessage {
                             Text(success)
                                 .font(.system(size: 13))
@@ -116,7 +218,6 @@ struct RegisterView: View {
                 }
                 .padding(.horizontal, 24)
                 
-                // MARK: - Sign In Button
                 Button(action: {
                     Task { await vm.submit() }
                 }) {
@@ -140,7 +241,6 @@ struct RegisterView: View {
                 .padding(.top, 36)
                 .disabled(vm.isLoading)
                 
-                // MARK: - Error Message
                 if let error = vm.errorMessage {
                     Text(error)
                         .font(.system(size: 14))
@@ -174,9 +274,7 @@ struct FieldGroup<Content: View>: View {
                     .foregroundColor(.red)
                     .font(.system(size: 16, weight: .semibold))
             }
-            
             content
-            
             Text(hint)
                 .font(.system(size: 13))
                 .foregroundColor(.gray)
@@ -196,7 +294,6 @@ struct CustomTextField: View {
             Image(systemName: icon)
                 .foregroundColor(.gray)
                 .frame(width: 20)
-            
             TextField(placeholder, text: $text)
                 .font(.system(size: 15))
                 .keyboardType(keyboardType)

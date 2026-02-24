@@ -27,7 +27,7 @@
 
 /* Begin PBXFileReference section */
 		6385510F2F4D993600E7B842 /* ParthenoKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ParthenoKit.xcframework; path = ../Downloads/ParthenoKit.xcframework; sourceTree = "<group>"; };
-		9D8866912F447BC7004614DE /* Hubble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hubble.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D8866912F447BC7004614DE /* Huddle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Huddle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -70,7 +70,7 @@
 		9D8866922F447BC7004614DE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9D8866912F447BC7004614DE /* Hubble.app */,
+				9D8866912F447BC7004614DE /* Huddle.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,9 +78,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9D8866902F447BC7004614DE /* Hubble */ = {
+		9D8866902F447BC7004614DE /* Huddle */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D88669C2F447BC8004614DE /* Build configuration list for PBXNativeTarget "Hubble" */;
+			buildConfigurationList = 9D88669C2F447BC8004614DE /* Build configuration list for PBXNativeTarget "Huddle" */;
 			buildPhases = (
 				9D88668D2F447BC7004614DE /* Sources */,
 				9D88668E2F447BC7004614DE /* Frameworks */,
@@ -94,11 +94,11 @@
 			fileSystemSynchronizedGroups = (
 				9D8866932F447BC7004614DE /* Huddle */,
 			);
-			name = Hubble;
+			name = Huddle;
 			packageProductDependencies = (
 			);
 			productName = Hubble;
-			productReference = 9D8866912F447BC7004614DE /* Hubble.app */;
+			productReference = 9D8866912F447BC7004614DE /* Huddle.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -130,7 +130,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9D8866902F447BC7004614DE /* Hubble */,
+				9D8866902F447BC7004614DE /* Huddle */,
 			);
 		};
 /* End PBXProject section */
@@ -351,7 +351,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9D88669C2F447BC8004614DE /* Build configuration list for PBXNativeTarget "Hubble" */ = {
+		9D88669C2F447BC8004614DE /* Build configuration list for PBXNativeTarget "Huddle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9D88669D2F447BC8004614DE /* Debug */,
