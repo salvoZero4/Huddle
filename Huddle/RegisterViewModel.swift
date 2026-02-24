@@ -119,8 +119,11 @@ class RegisterViewModel: ObservableObject {
     private func login() async {
         isLoading = true
         
-        let users    = UserDefaults.standard.dictionary(forKey: "huddle_users") as? [String: String] ?? [:]
-        let username = users[email] ?? ""
+        // Update the stored username with whatever they typed
+        var users = UserDefaults.standard.dictionary(forKey: "huddle_users") as? [String: String] ?? [:]
+        users[email] = username  // ← overwrite with new username
+        UserDefaults.standard.set(users, forKey: "huddle_users")
+        
         session.saveSession(email: email, username: username)
         
         isLoading = false

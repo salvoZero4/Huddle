@@ -9,12 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @EnvironmentObject private var session: SessionManager
     @State var selection: Int = 0
-    @State var userCurrent: User? = User(
-        userName: "Daniele Giammarresi",
-        mail: "daniele.giammarresi@community.unipa.it",
-        huddles: []
-        )
+    @State var userCurrent: User? = nil
     
     @State var huddles = [
         Huddle(subject: "Calculus I", building: "Building 6", room: "A330",
@@ -25,7 +22,7 @@ struct ContentView: View {
                engineering: "Computer",
                users:
                 [User(userName: "Daniele Giammarresi",
-                      mail:"daniele.giammarresi@community.unipa.it",huddles: []),
+                      mail:"daniele.giammarresi@community.unipa.it", huddles: []),
                  User(userName: "Gabriele Barone",
                       mail: "gabriele.barone@community.unipa.it", huddles: [])
                 ]),
@@ -38,21 +35,21 @@ struct ContentView: View {
                engineering: "Civil",
                users:
                 [User(userName: "Salvatore Scaravalle",
-                      mail:"salvatore.scaravalle@community.unipa.it",huddles: []),
+                      mail:"salvatore.scaravalle@community.unipa.it", huddles: []),
                  User(userName: "Matteo Raimondi",
-                      mail: "matteo.raimondi@community.unipa.it",huddles:[])
+                      mail: "matteo.raimondi@community.unipa.it", huddles:[])
                 ])
     ]
     
     var body: some View {
         TabView(selection: $selection) {
-            SearchView(huddles: $huddles, user: Binding($userCurrent)!)
+            SearchView(huddles: $huddles, user: Binding($userCurrent) ?? .constant(User(userName: "", mail: "", huddles: [])))
                 .tabItem {
                     Label("Explore", systemImage: "magnifyingglass")
                 }
                 .tag(0)
             
-            MyGroupView(huddles: huddles, user: Binding($userCurrent)!)
+            MyGroupView(huddles: huddles, user: Binding($userCurrent) ?? .constant(User(userName: "", mail: "", huddles: [])))
                 .tabItem {
                     Label("My Huddle", systemImage: "person.2")
                 }
@@ -70,6 +67,18 @@ struct ContentView: View {
                 }
                 .tag(3)
         }
+        .onAppear {
+            syncUserFromSession()
+        }
+        .onChange(of: session.currentUsername) { _, _ in
+            syncUserFromSession()
+        }
+    }
+    
+    private func syncUserFromSession() {
+        guard let email = session.currentEmail,
+              let username = session.currentUsername else { return }
+        userCurrent = User(userName: username, mail: email, huddles: [])
     }
 }
 
@@ -80,7 +89,7 @@ struct User: Identifiable, Codable {
     var huddles: [Huddle]
 }
 
-struct Huddle: Identifiable, Codable, Equatable{
+struct Huddle: Identifiable, Codable, Equatable {
     static func == (lhs: Huddle, rhs: Huddle) -> Bool {
         return lhs.id == rhs.id
     }
@@ -95,12 +104,9 @@ struct Huddle: Identifiable, Codable, Equatable{
     var linkT: String
     var engineering: String
     var users: [User]
-    
-    /*func isEqual (huddle: Huddle) -> Bool{
-        return self.id == huddle.id
-    }*/
 }
 
 #Preview {
     ContentView()
+        .environmentObject(SessionManager.shared)
 }

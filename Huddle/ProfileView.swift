@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Binding var user : User?
+    @EnvironmentObject private var session: SessionManager
     @State private var showLogoutConfirmation = false
     var body: some View {
         VStack{
@@ -69,7 +70,7 @@ struct ProfileView: View {
                     .fontWeight(.bold)
                     .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
                         Button("Accetta", role: .destructive) {
-                            user = nil
+                            session.clearSession()
                             print("Logout effettuato")
                         }
                         Button("Annulla", role: .cancel) { }
