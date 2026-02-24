@@ -18,7 +18,7 @@ struct CreateView: View {
     @State var description: String = ""
     @State var linkWhatsapp: String = ""
     @State var linkTelegram: String = ""
-    let materieDisponibili: [String] = [""]
+    let materieDisponibili: [String] = ["Select Subject"]
     let materieComputer = ["Select subject","Calculus I","Calculus II","Physics I", "Physics II","Geometry","Algebra","Fundaments of Programming","Algorithms and Data Structures","Computer Architecture","Programming","Base of Data","Computer Networks and the Internet","Automatic controls","Signal theory","Electrical Engineering","Eletronics","Software Engineering", "Operating System", "Web and Mobile Programming" ]
     let materieElectrical = [
         "Select subject",

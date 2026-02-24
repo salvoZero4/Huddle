@@ -59,6 +59,7 @@ struct DetailView: View {
                     {
                         Button(action: {
                             user.huddles.append(huddle)
+                            huddle.users.append(user)
                         }) {
                             Label("Join the Huddle", systemImage: "plus.circle.fill")
                                 .frame(maxWidth: .infinity)
@@ -71,6 +72,7 @@ struct DetailView: View {
                     }else{
                         Button(action: {
                             user.huddles.removeAll { $0.id == huddle.id }
+                            huddle.users.removeAll { $0.id == user.id }
                         }) {
                             Label("Huddle Joined", systemImage: "plus.circle.fill")
                                 .frame(maxWidth: .infinity)
