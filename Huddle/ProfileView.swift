@@ -1,6 +1,6 @@
 //
 //  ProfileView.swift
-//  
+//  Huddle
 //
 //  Created by Daniele Giammarresi on 18/02/26.
 //
@@ -11,6 +11,7 @@ struct ProfileView: View {
     @Binding var user: User // Usiamo @Binding così se cambia nome si aggiorna ovunque
     @EnvironmentObject private var session: SessionManager // Importiamo la sessione
     @State private var showLogoutConfirmation = false
+    @State private var user: User? = nil
     
     var body: some View {
         VStack{
@@ -48,8 +49,16 @@ struct ProfileView: View {
                     .background(RoundedRectangle(cornerRadius: 25).fill(Color(.systemGray6)))
                 }
                 
-                // Qui dovrai passare il binding alla EditProfileView
-                // NavigationLink(destination: EditProfileView(user: $user)) { ... }
+                NavigationLink(destination: EditProfileView(user: $user)) {
+                    Text("Edit Profile")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .fontWeight(.bold)
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color(.systemGray6))
+                )
                 
                 VStack {
                     Button("Logout") {
@@ -57,25 +66,33 @@ struct ProfileView: View {
                     }
                     .foregroundStyle(.red)
                     .fontWeight(.bold)
-                    .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
-                        Button("Accetta", role: .destructive) {
-                            // IL VERO LOGOUT!
+                    .alert("Are you sure you want to logout?", isPresented: $showLogoutConfirmation) {
+                        Button("Logout", role: .destructive) {
                             session.clearSession()
-                            print("Logout effettuato")
                         }
-                        Button("Annulla", role: .cancel) { }
+                        Button("Cancel", role: .cancel) { }
                     }
                     .padding()
                 }
                 .frame(maxWidth: .infinity)
-                .background(RoundedRectangle(cornerRadius: 25).fill(Color(.systemGray6)))
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color(.systemGray6))
+                )
                 
                 Spacer()
             }
         }
         .padding()
+        .onAppear {
+            // Load full user from ParthenoKit
+            if let email = session.currentEmail {
+                user = HuddleService.shared.fetchUser(email: email)
+            }
+        }
     }
 }
+
 #Preview {
     ProfileView(user: .constant(User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it", huddles: [])))
 }
