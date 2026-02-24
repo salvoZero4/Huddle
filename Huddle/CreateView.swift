@@ -231,7 +231,7 @@ struct CreateView: View {
                     user.huddles.append(nuovoHuddle)
                     
                     //aggiorno user nel parthenoKit
-                    let updatedUser = HuddleService.shared.updateUser(utenteAggiornato: user)
+                    _ = HuddleService.shared.updateUser(utenteAggiornato: user)
                     
                     
                     // 2. Chiamiamo ParthenoKit

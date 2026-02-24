@@ -59,7 +59,17 @@ struct DetailView: View {
                 .padding()
                 
                 // BOX GRIGIO CON BOTTONI E DESCRIZIONE
+                
                 VStack {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Huddle description")
+                            .font(.title2).bold()
+                        
+                        Text(huddle.description)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading) // Allinea perfettamente a sinistra!
+                    Divider().padding()
                     if !huddle.linkW.isEmpty {
                         // BOTTONE WHATSAPP
                         Button(action: {
@@ -92,6 +102,8 @@ struct DetailView: View {
                         }
                     }
 
+                   
+                    // ------
                     // BOTTONE JOIN / LEAVE INTELLIGENTE
                     Button(action: {
                         // 1. Vibrazione tattile per un feedback premium!
@@ -128,20 +140,10 @@ struct DetailView: View {
                             .animation(.easeInOut(duration: 0.3), value: isUserJoined)
                     }
                     
-                    // --- SEZIONE DESCRIZIONE ---
-                    Divider()
-                        .padding(.vertical)
+            
+                      
                     
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Huddle description")
-                            .font(.title2).bold()
-                        
-                        Text(huddle.description)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading) // Allinea perfettamente a sinistra!
-                    // ---------------------------
-                    
+                  
                 }
                 .padding()
                 .background(Color(.systemGray6))

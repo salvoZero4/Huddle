@@ -51,23 +51,14 @@ struct SearchView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     
                     // HEADER
-                    HStack {
-                        Image(systemName: "book.circle.fill")
-                            .font(.system(size: 45))
-                            .foregroundColor(.blue)
-                        
-                        Text("Hello \(user.userName)!")
-                            .font(.title2).bold()
-                            .fontWeight(.medium)
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal)
+                  
 
                     Text("Explore Huddle")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .padding(.horizontal)
+                        .padding()
+                        .foregroundColor(.blue)
 
                     // BARRA DI RICERCA
                     HStack {

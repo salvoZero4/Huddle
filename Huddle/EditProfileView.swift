@@ -32,7 +32,7 @@ struct EditProfileView: View {
                 if var currentUser = user {
                     currentUser.userName = userName
                     user = currentUser
-                    let _updatedUser = HuddleService.shared.updateUser(utenteAggiornato: currentUser)
+                    _ = HuddleService.shared.updateUser(utenteAggiornato: currentUser)
 
                 }
             }){

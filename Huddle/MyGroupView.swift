@@ -17,10 +17,22 @@ struct MyGroupView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
+                    
+                    HStack{
+                        Text("My Group")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .padding(.horizontal)
+                            .padding()
+                            .foregroundColor(.blue)
+                        Spacer()
+                    }
+                    
                     Text("In Progress")
                         .font(.title2).bold()
                         .foregroundColor(.gray)
                         .padding(.horizontal)
+                        .padding()
                     
                     // 3. USIAMO LA LISTA FILTRATA (mieiHuddle) AL POSTO DI QUELLA GENERALE
                     ForEach(user.huddles) { huddle in
@@ -33,7 +45,7 @@ struct MyGroupView: View {
                     }
                 }
             }
-            .navigationTitle("My Group")
+            
             // 4. RICARICA I DATI FRESCHI OGNI VOLTA CHE APRI LA SCHERMATA
             //.onAppear {
               //  self.huddles = //HuddleService.shared.fetchAllHuddles()
