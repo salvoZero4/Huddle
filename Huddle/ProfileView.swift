@@ -87,7 +87,7 @@ struct ProfileView: View {
         .onAppear {
             // Load full user from ParthenoKit
             if let email = session.currentEmail {
-                user = HuddleService.shared.fetchUser(email: email)
+                user = HuddleService.shared.fetchUser(email: email)!
             }
         }
     }
