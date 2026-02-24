@@ -13,8 +13,7 @@ struct DetailView: View {
     @Environment(\.openURL) var openURL
     @State var huddle: Huddle //DISCUTERE RIGUARDO L'IDENTIFICATORE
     @Binding var user: User
-    
-    //var asJoined = user.huddles.contains()
+
     
     var body: some View {
         ScrollView {
