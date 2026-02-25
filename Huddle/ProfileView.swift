@@ -11,7 +11,6 @@ struct ProfileView: View {
     @Binding var user: User // Usiamo @Binding così se cambia nome si aggiorna ovunque
     @EnvironmentObject private var session: SessionManager // Importiamo la sessione
     @State private var showLogoutConfirmation = false
-    @State private var user: User? = nil
     
     var body: some View {
         VStack{
@@ -49,7 +48,7 @@ struct ProfileView: View {
                     .background(RoundedRectangle(cornerRadius: 25).fill(Color(.systemGray6)))
                 }
                 
-                NavigationLink(destination: EditProfileView(user: $user)) {
+                NavigationLink(destination: EditProfileView(user: Binding($user))) {
                     Text("Edit Profile")
                         .padding()
                         .frame(maxWidth: .infinity)

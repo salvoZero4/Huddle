@@ -38,7 +38,7 @@ struct ContentView: View {
                 }.tag(3)
         }
         .onAppear {
-            caricaUtente()
+            loadUser()
         }
     }
     
