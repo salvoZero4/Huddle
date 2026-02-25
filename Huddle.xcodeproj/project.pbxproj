@@ -7,18 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9D7932B02F46331C00929534 /* ParthenoKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D7932AF2F46331C00929534 /* ParthenoKit.xcframework */; };
-		9D7932B12F46331C00929534 /* ParthenoKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9D7932AF2F46331C00929534 /* ParthenoKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9D4BC39F2F4DB2D90022EEB1 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4BC39E2F4DB2D90022EEB1 /* DatabaseManager.swift */; };
+		9D4BC3BB2F4DC5B10022EEB1 /* ParthenoKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D4BC3BA2F4DC5B10022EEB1 /* ParthenoKit.xcframework */; };
+		9D4BC3BC2F4DC5B10022EEB1 /* ParthenoKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9D4BC3BA2F4DC5B10022EEB1 /* ParthenoKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9D7932B22F46331C00929534 /* Embed Frameworks */ = {
+		9D4BC39D2F4DA2900022EEB1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9D7932B12F46331C00929534 /* ParthenoKit.xcframework in Embed Frameworks */,
+				9D4BC3BC2F4DC5B10022EEB1 /* ParthenoKit.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -26,8 +27,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		9D7932AF2F46331C00929534 /* ParthenoKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ParthenoKit.xcframework; path = ../../Downloads/ParthenoKit.xcframework; sourceTree = "<group>"; };
-		9D8866912F447BC7004614DE /* Hubble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hubble.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D4BC39E2F4DB2D90022EEB1 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		9D4BC3BA2F4DC5B10022EEB1 /* ParthenoKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ParthenoKit.xcframework; path = ../../Downloads/ParthenoKit.xcframework; sourceTree = "<group>"; };
+		9D8866912F447BC7004614DE /* Huddle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Huddle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -43,7 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D7932B02F46331C00929534 /* ParthenoKit.xcframework in Frameworks */,
+				9D4BC3BB2F4DC5B10022EEB1 /* ParthenoKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,7 +55,8 @@
 		9D7932AE2F46331C00929534 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9D7932AF2F46331C00929534 /* ParthenoKit.xcframework */,
+				9D4BC3BA2F4DC5B10022EEB1 /* ParthenoKit.xcframework */,
+				9D4BC39E2F4DB2D90022EEB1 /* DatabaseManager.swift */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -70,7 +73,7 @@
 		9D8866922F447BC7004614DE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9D8866912F447BC7004614DE /* Hubble.app */,
+				9D8866912F447BC7004614DE /* Huddle.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,14 +81,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9D8866902F447BC7004614DE /* Hubble */ = {
+		9D8866902F447BC7004614DE /* Huddle */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D88669C2F447BC8004614DE /* Build configuration list for PBXNativeTarget "Hubble" */;
+			buildConfigurationList = 9D88669C2F447BC8004614DE /* Build configuration list for PBXNativeTarget "Huddle" */;
 			buildPhases = (
 				9D88668D2F447BC7004614DE /* Sources */,
 				9D88668E2F447BC7004614DE /* Frameworks */,
 				9D88668F2F447BC7004614DE /* Resources */,
-				9D7932B22F46331C00929534 /* Embed Frameworks */,
+				9D4BC39D2F4DA2900022EEB1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -94,11 +97,11 @@
 			fileSystemSynchronizedGroups = (
 				9D8866932F447BC7004614DE /* Huddle */,
 			);
-			name = Hubble;
+			name = Huddle;
 			packageProductDependencies = (
 			);
 			productName = Hubble;
-			productReference = 9D8866912F447BC7004614DE /* Hubble.app */;
+			productReference = 9D8866912F447BC7004614DE /* Huddle.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -130,7 +133,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9D8866902F447BC7004614DE /* Hubble */,
+				9D8866902F447BC7004614DE /* Huddle */,
 			);
 		};
 /* End PBXProject section */
@@ -150,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D4BC39F2F4DB2D90022EEB1 /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +355,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9D88669C2F447BC8004614DE /* Build configuration list for PBXNativeTarget "Hubble" */ = {
+		9D88669C2F447BC8004614DE /* Build configuration list for PBXNativeTarget "Huddle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9D88669D2F447BC8004614DE /* Debug */,

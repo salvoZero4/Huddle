@@ -5,9 +5,11 @@
 //  Created by Salvatore Scaravalle on 19/02/26.
 //
 
+import Foundation
 import SwiftUI
 
 struct EditProfileView: View {
+    
     @Binding var user: User?
     @State var userName = ""
     var body: some View {
@@ -30,6 +32,8 @@ struct EditProfileView: View {
                 if var currentUser = user {
                     currentUser.userName = userName
                     user = currentUser
+                    _ = HuddleService.shared.updateUser(utenteAggiornato: currentUser)
+
                 }
             }){
                 Text("Conferma")
@@ -43,6 +47,9 @@ struct EditProfileView: View {
               
             Spacer()
             Spacer()
+
+            
+            
             
             }
  
