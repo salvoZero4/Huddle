@@ -21,7 +21,7 @@ let engCategories = [
     EngineeringCategory(name: "Electrical", icon: "bolt.fill", color: .orange),
     EngineeringCategory(name: "Civil", icon: "building.2.fill", color: .gray),
     EngineeringCategory(name: "Biomedical", icon: "heart.text.square.fill", color: .red),
-    EngineeringCategory(name: "Mechanical", icon: "gearshape.fill", color: .blue)
+    EngineeringCategory(name: "Mechanical", icon: "gearshape.fill", color: .purple)
 ]
 
 struct SearchView: View {
@@ -46,7 +46,6 @@ struct SearchView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     
-                    // --- TITOLO E BOTTONE PROFILO ---
                     HStack {
                         Text("Explore Huddle")
                             .font(.largeTitle)
@@ -78,6 +77,16 @@ struct SearchView: View {
                    
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 15) {
+                            Button(action:{
+                                selectedCategory = nil
+                            } ){
+                                CategoryButton(
+                                    icon: "book.fill",
+                                    title: "All",
+                                    color: Color(.blue),
+                                    
+                                )
+                            }
                             ForEach(engCategories) { category in
                                 Button(action: {
                                     if selectedCategory == category.name {

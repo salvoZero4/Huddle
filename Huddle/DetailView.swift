@@ -128,6 +128,7 @@ struct DetailView: View {
                             print("Ti sei unito all'Huddle con successo!")
                         }
                         
+                        let _ = HuddleService.shared.updateUser(utenteAggiornato: user)
                         let _ = HuddleService.shared.updateHuddle(huddleAggiornato: huddle)
                         
                     }) {
