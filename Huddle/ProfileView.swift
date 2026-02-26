@@ -8,8 +8,8 @@ import Foundation
 import SwiftUI
 
 struct ProfileView: View {
-    @Binding var user: User // Usiamo @Binding così se cambia nome si aggiorna ovunque
-    @EnvironmentObject private var session: SessionManager // Importiamo la sessione
+    @Binding var user: User
+    @EnvironmentObject private var session: SessionManager
     @State private var showLogoutConfirmation = false
     
     var body: some View {
@@ -48,7 +48,7 @@ struct ProfileView: View {
                     .background(RoundedRectangle(cornerRadius: 25).fill(Color(.systemGray6)))
                 }
                 
-                NavigationLink(destination: EditProfileView(user: Binding($user))) {
+                NavigationLink(destination: EditProfileView(user: $user)) {
                     Text("Edit Profile")
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -65,33 +65,25 @@ struct ProfileView: View {
                     }
                     .foregroundStyle(.red)
                     .fontWeight(.bold)
-                    .alert("Are you sure you want to logout?", isPresented: $showLogoutConfirmation) {
-                        Button("Logout", role: .destructive) {
+                    .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
+                        Button("Accetta", role: .destructive) {
+                            // IL VERO LOGOUT!
                             session.clearSession()
+                            print("Logout effettuato")
                         }
-                        Button("Cancel", role: .cancel) { }
+                        Button("Annulla", role: .cancel) { }
                     }
                     .padding()
                 }
                 .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 25)
-                        .fill(Color(.systemGray6))
-                )
+                .background(RoundedRectangle(cornerRadius: 25).fill(Color(.systemGray6)))
                 
                 Spacer()
             }
         }
         .padding()
-        .onAppear {
-            // Load full user from ParthenoKit
-            if let email = session.currentEmail {
-                user = HuddleService.shared.fetchUser(email: email)!
-            }
-        }
     }
 }
-
 #Preview {
     ProfileView(user: .constant(User(userName: "salvo", mail: "salvatore.scaravalle@community.unipa.it", huddles: [])))
 }

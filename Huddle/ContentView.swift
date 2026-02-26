@@ -8,49 +8,39 @@
 import SwiftUI
 
 struct ContentView: View {
-    // 1. Leggiamo la sessione attuale
     @EnvironmentObject private var session: SessionManager
-    @State var selection: Int = 0
-    // 2. Partiamo con un utente "vuoto" che verrà riempito in una frazione di secondo
     @State private var user = User(userName: "Caricamento...", mail: "", huddles: [])
     @State private var huddles: [Huddle] = []
     
     var body: some View {
-        TabView(selection: $selection) {
+        TabView {
             SearchView(huddles: huddles, user: $user)
                 .tabItem {
                     Label("Explore", systemImage: "magnifyingglass")
-                }.tag(0)
+                }
             
-            MyGroupView(user: $user, huddles: huddles)
+            MyGroupView(user: $user)
                 .tabItem {
                     Label("My Group", systemImage: "person.2.fill")
-                }.tag(1)
+                }
             
-            CreateView(user: $user)
-                .tabItem {
-                    Label("Create", systemImage: "plus.circle")
-                }.tag(2)
-            
-            ProfileView(user: $user) // <-- Passiamo il binding anche qui se vuoi modificarlo!
+            ProfileView(user: $user)
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
-                }.tag(3)
+                }
         }
         .onAppear {
-            loadUser()
+                caricaUtente()
         }
     }
     
-    private func loadUser() {
-        guard let email = session.currentEmail,
-              let username = session.currentUsername else { return }
+    private func caricaUtente() {
+        guard let email = session.currentEmail, let username = session.currentUsername else { return }
         
-        // Try to fetch full user (with huddles) from ParthenoKit
-        if let fetchedUser = HuddleService.shared.fetchUser(email: email) {
-            user = fetchedUser
+        if let utenteScaricato = HuddleService.shared.fetchUser(email: email) {
+            print("Bentornato, \(utenteScaricato.userName)!")
+            self.user = utenteScaricato
         } else {
-            // Se non esiste su ParthenoKit (primo accesso assoluto), lo creiamo e lo salviamo!
             print("Nuovo utente! Creo il profilo su ParthenoKit...")
             let nuovoUtente = User(userName: username, mail: email, huddles: [])
             self.user = nuovoUtente
@@ -58,9 +48,6 @@ struct ContentView: View {
         }
     }
 }
-    
- 
-
 struct User: Identifiable, Codable {
     var id = UUID()
     var userName: String
@@ -88,10 +75,14 @@ struct Huddle: Identifiable, Codable, Equatable {
     mutating func setBuilding(building: String) { self.building = building }
     mutating func setRoom(room: String) { self.room = room }
     mutating func setSubject(subject: String) { self.subject = subject }
-    mutating func setDate(date: Date) { self.date = date }
+    
+    mutating func setDate(date: Date) {
+        self.date = date
+    }
 }
+
+
 
 #Preview {
     ContentView()
-        .environmentObject(SessionManager.shared)
 }

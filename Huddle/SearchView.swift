@@ -18,7 +18,7 @@ struct EngineeringCategory: Identifiable {
 let engCategories = [
     EngineeringCategory(name: "Computer", icon: "desktopcomputer", color: .cyan),
     EngineeringCategory(name: "Management", icon: "chart.bar.fill", color: .green),
-    EngineeringCategory(name: "Electronic", icon: "bolt.fill", color: .orange),
+    EngineeringCategory(name: "Electrical", icon: "bolt.fill", color: .orange),
     EngineeringCategory(name: "Civil", icon: "building.2.fill", color: .gray),
     EngineeringCategory(name: "Biomedical", icon: "heart.text.square.fill", color: .red),
     EngineeringCategory(name: "Mechanical", icon: "gearshape.fill", color: .blue)
@@ -30,7 +30,7 @@ struct SearchView: View {
     @State private var searchText = ""
     @State private var selectedCategory: String? = nil
     
-    // VARIABILE CALCOLATA PER I FILTRI
+    // VARIABILE PER I FILTRI
     var filteredHuddles: [Huddle] {
         var result = huddles
         
@@ -49,15 +49,11 @@ struct SearchView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    
-                    // HEADER
-                  
 
                     Text("Explore Huddle")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .padding(.horizontal)
-                        .padding()
                         .foregroundColor(.blue)
 
                     // BARRA DI RICERCA
@@ -85,7 +81,7 @@ struct SearchView: View {
                                     CategoryButton(
                                         icon: category.icon,
                                         title: category.name,
-                                        color: selectedCategory == category.name ? category.color : .blue.opacity(0.3)
+                                        color: category.color
                                     )
                                 }
                             }
@@ -139,14 +135,24 @@ struct CategoryButton: View {
 struct HuddleCard: View {
     let huddle: Huddle
     
+    private func getCategoryInfo() -> (icon: String, color: Color) {
+        if let category = engCategories.first(where: { $0.name == huddle.engineering }) {
+            return (category.icon, category.color)
+        }
+        return ("person.3.fill", .blue)
+    }
+    
     var body: some View {
         HStack(spacing: 15) {
             ZStack {
+                let info = getCategoryInfo()
+                
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.blue.opacity(0.1))
+                    .fill(info.color.opacity(0.1))
                     .frame(width: 60, height: 60)
-                Image(systemName: "person.3.fill")
-                    .foregroundColor(.blue)
+                
+                Image(systemName: info.icon)
+                    .foregroundColor(info.color)
                     .font(.title2)
             }
             

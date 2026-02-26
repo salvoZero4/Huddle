@@ -4,17 +4,12 @@
 import Foundation
 import SwiftUI
 import Combine
-import ParthenoKit
 
 @MainActor
 class RegisterViewModel: ObservableObject {
-    
-    // MARK: - Input
     @Published var username         = ""
     @Published var email            = ""
     @Published var verificationCode = ""
-    
-    // MARK: - State
     @Published var isLoading      = false
     @Published var errorMessage:   String? = nil
     @Published var successMessage: String? = nil
@@ -26,12 +21,7 @@ class RegisterViewModel: ObservableObject {
     
     private let session = SessionManager.shared
     private let emails  = EmailService.shared
-    private let db      = ParthenoKit()
     
-    private let team = "PA4ZQ2S678QH"
-    private let tag  = "users"
-    
-    // MARK: - Step 1: Send Code
     func sendCode() async {
         errorMessage   = nil
         successMessage = nil
@@ -48,12 +38,12 @@ class RegisterViewModel: ObservableObject {
         
         isLoading = true
         
-        let existing = db.readSync(team: team, tag: tag, key: email)
-        isNewUser = existing.isEmpty
-        
+        let existingUsers = UserDefaults.standard.dictionary(forKey: "huddle_users") as? [String: String] ?? [:]
+        isNewUser = existingUsers[email] == nil
+       
         if isNewUser == true {
-            let takenResult = db.readSync(team: team, tag: "usernames", key: username.lowercased())
-            if !takenResult.isEmpty {
+            let takenUsernames = existingUsers.values.map { $0.lowercased() }
+            if takenUsernames.contains(username.lowercased()) {
                 errorMessage = "This username is already taken. Please choose another."
                 isLoading    = false
                 return
@@ -75,7 +65,6 @@ class RegisterViewModel: ObservableObject {
         isLoading = false
     }
     
-    // MARK: - Step 2: Submit
     func submit() async {
         errorMessage = nil
         
@@ -93,53 +82,37 @@ class RegisterViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Register
     private func register() async {
         isLoading = true
         
-        let takenResult = db.readSync(team: team, tag: "usernames", key: username.lowercased())
-        if !takenResult.isEmpty {
+        var users = UserDefaults.standard.dictionary(forKey: "huddle_users") as? [String: String] ?? [:]
+        
+        let takenUsernames = users.values.map { $0.lowercased() }
+        if takenUsernames.contains(username.lowercased()) {
             errorMessage = "This username is already taken. Please choose another."
             isLoading    = false
             return
         }
         
-        // Save email -> username in users tag
-        let _ = db.writeSync(team: team, tag: tag, key: email, value: username)
-        // Save username index
-        let _ = db.writeSync(team: team, tag: "usernames", key: username.lowercased(), value: email)
-        
-        // Save full User object in HuddleService
-        let newUser = User(userName: username, mail: email, huddles: [])
-        let _ = HuddleService.shared.updateUser(utenteAggiornato: newUser)
-        
+        users[email] = username
+        UserDefaults.standard.set(users, forKey: "huddle_users")
         session.saveSession(email: email, username: username)
+        
         isLoading = false
     }
     
-    // MARK: - Login
     private func login() async {
         isLoading = true
         
-        // Update username
-        let _ = db.writeSync(team: team, tag: tag, key: email, value: username)
-        let _ = db.writeSync(team: team, tag: "usernames", key: username.lowercased(), value: email)
-        
-        // Fetch existing user to preserve their huddles, update username
-        if var existingUser = HuddleService.shared.fetchUser(email: email) {
-            existingUser.userName = username
-            let _ = HuddleService.shared.updateUser(utenteAggiornato: existingUser)
-        } else {
-            // First login, create user
-            let newUser = User(userName: username, mail: email, huddles: [])
-            let _ = HuddleService.shared.updateUser(utenteAggiornato: newUser)
-        }
+        var users = UserDefaults.standard.dictionary(forKey: "huddle_users") as? [String: String] ?? [:]
+        users[email] = username  // ← overwrite with new username
+        UserDefaults.standard.set(users, forKey: "huddle_users")
         
         session.saveSession(email: email, username: username)
+        
         isLoading = false
     }
     
-    // MARK: - Code Verification
     private func verifyCode() -> Bool {
         guard let stored = generatedCode, let expiry = codeExpiry else {
             errorMessage = "Please request a code first."
@@ -156,7 +129,6 @@ class RegisterViewModel: ObservableObject {
         return true
     }
     
-    // MARK: - Validation
     private func isValidEmail(_ email: String) -> Bool {
         email.hasSuffix("@community.unipa.it") || email.hasSuffix("@unipa.it")
     }
