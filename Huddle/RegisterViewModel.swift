@@ -105,7 +105,7 @@ class RegisterViewModel: ObservableObject {
         isLoading = true
         
         var users = UserDefaults.standard.dictionary(forKey: "huddle_users") as? [String: String] ?? [:]
-        users[email] = username  // ← overwrite with new username
+        users[email] = username
         UserDefaults.standard.set(users, forKey: "huddle_users")
         
         session.saveSession(email: email, username: username)

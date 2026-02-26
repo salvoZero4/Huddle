@@ -118,7 +118,6 @@ struct SearchView: View {
                     .cornerRadius(15)
                     .padding(.horizontal)
 
-                    // LISTA DEGLI HUDDLE
                     VStack(spacing: 16) {
                         if filteredHuddles.isEmpty {
                             ContentUnavailableView("No Huddles found", systemImage: "magnifyingglass")

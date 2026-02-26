@@ -90,7 +90,7 @@ struct RegisterView: View {
                             .disabled(vm.isLoading)
                         }
                         
-                        // Status message under code field
+                        
                         if let success = vm.successMessage {
                             Text(success)
                                 .font(.system(size: 13))

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MyGroupView: View {
     @Binding var user: User
-    // Ho rimosso @State var huddles: [Huddle] perché non ci serve più, usiamo user.huddles!
     
     var body: some View {
         NavigationStack {

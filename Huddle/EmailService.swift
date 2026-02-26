@@ -1,5 +1,5 @@
 //  EmailService.swift
-//  Hubble
+//  Huddle
 
 import Foundation
 

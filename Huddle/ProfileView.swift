@@ -67,7 +67,7 @@ struct ProfileView: View {
                     .fontWeight(.bold)
                     .alert("Sei sicuro di voler uscire?", isPresented: $showLogoutConfirmation) {
                         Button("Accetta", role: .destructive) {
-                            // IL VERO LOGOUT!
+                          
                             session.clearSession()
                             print("Logout effettuato")
                         }

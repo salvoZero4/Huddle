@@ -10,7 +10,7 @@ struct HuddleApp: App {
     var body: some Scene {
         WindowGroup {
             if isOnboarding {
-                // Se è la prima volta (o non ha finito il tutorial)
+                
                 WelcomeView()
             } else if session.isLoggedIn {
                 ContentView()

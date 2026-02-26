@@ -1,6 +1,6 @@
 //
 //  DetailView.swift
-//  Hubble
+//  Huddle
 //
 //  Created by Salvatore Scaravalle on 20/02/26.
 //
