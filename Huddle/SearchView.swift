@@ -56,17 +56,6 @@ struct SearchView: View {
                         .padding(.horizontal)
                         .foregroundColor(.blue)
 
-                    // BARRA DI RICERCA
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
-                        TextField("Search", text: $searchText)
-                    }
-                    .padding(12)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(15)
-                    .padding(.horizontal)
-
                     // CATEGORIE INGEGNERIA
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 15) {
@@ -88,6 +77,20 @@ struct SearchView: View {
                         }
                         .padding(.horizontal)
                     }
+                    
+                    
+                    // BARRA DI RICERCA
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                        TextField("Search", text: $searchText)
+                    }
+                    .padding(12)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(15)
+                    .padding(.horizontal)
+
+                 
 
                     // LISTA DEGLI HUDDLE
                     VStack(spacing: 16) {
