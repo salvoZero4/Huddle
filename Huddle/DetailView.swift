@@ -11,9 +11,9 @@ import SwiftUI
 struct DetailView: View {
     @Binding var user: User
     @State var huddle: Huddle
-    @Environment(\.openURL) var openURL //--> serve per aprire u linkeone
+    @Environment(\.openURL) var openURL
     
-    // Controlla se l'utente attuale è già dentro l'Huddle
+    
     var isUserJoined: Bool {
         huddle.users.contains(where: { $0.id == user.id })
     }
@@ -45,7 +45,6 @@ struct DetailView: View {
                 HStack {
                     Image(systemName: "person.circle.fill")
                     
-                    // Controlliamo in modo sicuro se la lista degli utenti è vuota
                     if huddle.users.isEmpty {
                         Text("Nessun partecipante")
                             .foregroundColor(.gray)
@@ -58,22 +57,10 @@ struct DetailView: View {
                 }
                 .padding()
                 
-                // BOX GRIGIO CON BOTTONI E DESCRIZIONE
                 
                 VStack {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Huddle description")
-                            .font(.title2).bold()
-                        
-                        Text(huddle.description)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading) // Allinea perfettamente a sinistra!
-                    Divider().padding()
                     if !huddle.linkW.isEmpty {
-                        // BOTTONE WHATSAPP
                         Button(action: {
-                            // Controlla che il link non sia vuoto e lo apre
                             if let url = URL(string: huddle.linkW), !huddle.linkW.isEmpty {
                                 openURL(url)
                             }
@@ -87,7 +74,6 @@ struct DetailView: View {
                         }
                     }
                     if !huddle.linkT.isEmpty {
-                        // BOTTONE TELEGRAM
                         Button(action: {
                             if let url = URL(string: huddle.linkT), !huddle.linkT.isEmpty {
                                 openURL(url)
@@ -102,54 +88,48 @@ struct DetailView: View {
                         }
                     }
 
-                   
-                    // ------
-                    // BOTTONE JOIN / LEAVE INTELLIGENTE
+                
                     Button(action: {
-                        // 1. Vibrazione tattile per un feedback premium!
-                        let impactMed = UIImpactFeedbackGenerator(style: .medium)
-                        impactMed.impactOccurred()
                         
-                        // 2. Controllo: Entriamo o Usciamo?
                         if isUserJoined {
-                            // Se sei già dentro, rimuoviamo la tua mail dalla lista
                             huddle.users.removeAll(where: { $0.id == user.id })
                             user.huddles.removeAll(where: { $0.id == huddle.id })
                             print("Sei uscito dall'Huddle!")
                         } else {
-                            // Se non ci sei, ti aggiungiamo
                             huddle.users.append(user)
                             user.huddles.append(huddle)
                             print("Ti sei unito all'Huddle con successo!")
                         }
                         
-                        // 3. Salviamo sul database la modifica (in entrambi i casi!)
                         let _ = HuddleService.shared.updateHuddle(huddleAggiornato: huddle)
                         
                     }) {
-                        // Il testo e l'icona cambiano in base allo stato
                         Label(isUserJoined ? "Leave the Huddle" : "Join the Huddle",
                               systemImage: isUserJoined ? "minus.circle.fill" : "plus.circle.fill")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            // Rosso se sei dentro (per farti capire che esci), Blu se devi entrare
                             .background(isUserJoined ? Color.red : Color(.systemBlue))
                             .foregroundColor(.white)
                             .cornerRadius(25)
-                            // Animazione fluida quando cambia colore!
                             .animation(.easeInOut(duration: 0.3), value: isUserJoined)
                     }
                     
-            
-                      
+                    Divider()
+                        .padding(.vertical)
                     
-                  
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Huddle description")
+                            .font(.title2).bold()
+                        
+                        Text(huddle.description)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(25)
-                .padding(.horizontal) // Dà un po' di respiro ai lati
-                
+                .padding(.horizontal)
             }
         }
     }

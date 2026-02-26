@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EditProfileView: View {
     
-    @Binding var user: User?
+    @Binding var user: User
     @State var userName = ""
     var body: some View {
         VStack{
@@ -29,17 +29,14 @@ struct EditProfileView: View {
             ).padding(.horizontal)
 
             Button(action: {
-                if var currentUser = user {
-                    currentUser.userName = userName
-                    user = currentUser
-                    _ = HuddleService.shared.updateUser(utenteAggiornato: currentUser)
-
-                }
-            }){
+                user.userName = userName
+                
+                let _ = HuddleService.shared.updateUser(utenteAggiornato: user)
+            }) {
                 Text("Conferma")
                     .padding()
-                
-            }.frame(maxWidth: .infinity)
+            }
+                .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color(.systemGray6))
