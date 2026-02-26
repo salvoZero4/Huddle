@@ -41,7 +41,7 @@ struct ContentView: View {
             print("Bentornato, \(utenteScaricato.userName)!")
             self.user = utenteScaricato
         } else {
-            print("Nuovo utente! Creo il profilo su ParthenoKit...")
+            print("Nuovo utente! Creo il profilo su ParthenoKit")
             let nuovoUtente = User(userName: username, mail: email, huddles: [])
             self.user = nuovoUtente
             _ = HuddleService.shared.updateUser(utenteAggiornato: nuovoUtente)
