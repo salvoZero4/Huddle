@@ -122,6 +122,7 @@ struct SearchView: View {
                         if filteredHuddles.isEmpty {
                             ContentUnavailableView("No Huddles found", systemImage: "magnifyingglass")
                                 .padding(.top, 40)
+                            //Huddle >> hubble
                         } else {
                             ForEach(filteredHuddles) { huddle in
                                 NavigationLink(destination: DetailView(user: $user, huddle: huddle)) {
@@ -224,3 +225,5 @@ struct HuddleCard: View {
         user: .constant(User(userName: "Daniele", mail: "daniele@community.unipa.it", huddles: []))
     )
 }
+
+
