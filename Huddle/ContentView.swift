@@ -11,6 +11,7 @@ struct ContentView: View {
     @EnvironmentObject private var session: SessionManager
     @State private var user = User(userName: "Caricamento...", mail: "", huddles: [])
     @State private var huddles: [Huddle] = []
+    @State var selction: Int = 0
     
     var body: some View {
         TabView {
@@ -18,11 +19,13 @@ struct ContentView: View {
                 .tabItem {
                     Label("Explore", systemImage: "magnifyingglass")
                 }
+                .tag(0)
             
             MyGroupView(user: $user)
                 .tabItem {
                     Label("My Group", systemImage: "person.2.fill")
                 }
+                .tag(1)
             
         
         }
