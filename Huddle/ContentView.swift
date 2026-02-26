@@ -24,10 +24,7 @@ struct ContentView: View {
                     Label("My Group", systemImage: "person.2.fill")
                 }
             
-            ProfileView(user: $user)
-                .tabItem {
-                    Label("Profile", systemImage: "person.fill")
-                }
+        
         }
         .onAppear {
                 caricaUtente()
@@ -69,7 +66,6 @@ struct Huddle: Identifiable, Codable, Equatable {
     var linkW: String
     var linkT: String
     var engineering: String
-    var counter = 0
     var users: [User]
     
     mutating func setBuilding(building: String) { self.building = building }
@@ -85,4 +81,5 @@ struct Huddle: Identifiable, Codable, Equatable {
 
 #Preview {
     ContentView()
+        .environmentObject(SessionManager())
 }

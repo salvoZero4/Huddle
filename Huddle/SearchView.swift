@@ -30,18 +30,14 @@ struct SearchView: View {
     @State private var searchText = ""
     @State private var selectedCategory: String? = nil
     
-    // VARIABILE PER I FILTRI
     var filteredHuddles: [Huddle] {
         var result = huddles
-        
         if let category = selectedCategory {
             result = result.filter { $0.subject == category || $0.engineering == category }
         }
-        
         if !searchText.isEmpty {
             result = result.filter { $0.subject.lowercased().contains(searchText.lowercased()) }
         }
-        
         return result
     }
     
@@ -49,14 +45,37 @@ struct SearchView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
+                    
+                    // --- TITOLO E BOTTONE PROFILO ---
+                    HStack {
+                        Text("Explore Huddle")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.blue)
+                        
+                        Spacer()
+                        
+                        
+                        NavigationLink(destination: ProfileView(user: $user)) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(.systemGray6))
+                                    .frame(width: 50, height: 50)
+                                
+                                Image(systemName: "person.fill")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundColor(.blue)
+                            }
+                           
+                            .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                    .padding(.leading)
+                    .padding(.trailing)
+                   
 
-                    Text("Explore Huddle")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding(.horizontal)
-                        .foregroundColor(.blue)
-
-                    // CATEGORIE INGEGNERIA
+                   
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 15) {
                             ForEach(engCategories) { category in
@@ -70,7 +89,8 @@ struct SearchView: View {
                                     CategoryButton(
                                         icon: category.icon,
                                         title: category.name,
-                                        color: category.color
+                                        color: category.color,
+                                        
                                     )
                                 }
                             }
@@ -78,8 +98,7 @@ struct SearchView: View {
                         .padding(.horizontal)
                     }
                     
-                    
-                    // BARRA DI RICERCA
+                   
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
@@ -90,15 +109,18 @@ struct SearchView: View {
                     .cornerRadius(15)
                     .padding(.horizontal)
 
-                 
-
                     // LISTA DEGLI HUDDLE
                     VStack(spacing: 16) {
-                        ForEach(filteredHuddles) { huddle in
-                            NavigationLink(destination: DetailView(user: $user, huddle: huddle)) {
-                                HuddleCard(huddle: huddle)
+                        if filteredHuddles.isEmpty {
+                            ContentUnavailableView("No Huddles found", systemImage: "magnifyingglass")
+                                .padding(.top, 40)
+                        } else {
+                            ForEach(filteredHuddles) { huddle in
+                                NavigationLink(destination: DetailView(user: $user, huddle: huddle)) {
+                                    HuddleCard(huddle: huddle)
+                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
-                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                     .padding(.horizontal)
@@ -106,7 +128,6 @@ struct SearchView: View {
                 .padding(.top)
             }
             .onAppear {
-                // Appena si apre la schermata, scarica i dati da ParthenoKit!
                 self.huddles = HuddleService.shared.fetchAllHuddles()
             }
         }

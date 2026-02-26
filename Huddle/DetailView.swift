@@ -30,18 +30,35 @@ struct DetailView: View {
                 Text(huddle.subject)
                     .padding()
                     .font(.largeTitle).bold()
+                
+                HStack(spacing: 12) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "person.2.fill")
+                        Text("\(huddle.users.count)")
+                            .bold()
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color(.systemGray6))
+                    .foregroundColor(.black)
+                    .cornerRadius(8)
+                }
+
                 HStack {
                     Image(systemName: "mappin.and.ellipse")
                     Text("\(huddle.building), \(huddle.room)")
                         .foregroundColor(.gray)
                         .padding(.bottom, 2)
                 }
+
                 HStack {
                     Image(systemName: "calendar")
                     Text(huddle.date.formatted(date: .abbreviated, time: .shortened))
                         .foregroundColor(.gray)
-                        .padding(.bottom, 2)
                 }
+
+
+
                 HStack {
                     Image(systemName: "person.circle.fill")
                     
@@ -55,10 +72,20 @@ struct DetailView: View {
                             .padding(.bottom, 2)
                     }
                 }
-                .padding()
+                .padding(.bottom)
                 
                 
                 VStack {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Huddle description")
+                            .font(.title2).bold()
+                        
+                        Text(huddle.description)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    Divider()
+                        .padding(.vertical)
                     if !huddle.linkW.isEmpty {
                         Button(action: {
                             if let url = URL(string: huddle.linkW), !huddle.linkW.isEmpty {
@@ -114,17 +141,8 @@ struct DetailView: View {
                             .animation(.easeInOut(duration: 0.3), value: isUserJoined)
                     }
                     
-                    Divider()
-                        .padding(.vertical)
                     
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Huddle description")
-                            .font(.title2).bold()
-                        
-                        Text(huddle.description)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                   
                 }
                 .padding()
                 .background(Color(.systemGray6))
