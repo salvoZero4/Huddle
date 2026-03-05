@@ -11,7 +11,7 @@ import ParthenoKit
 class HuddleService {
     static let shared = HuddleService()
     
-    let team = "PA4ZQ2S678QH"
+    let team = SecretsManager.shared.parthenokitTeam
     let tag = "HUDDLES"
     let chiaveLista = "TUTTI_GLI_HUDDLE"
     
