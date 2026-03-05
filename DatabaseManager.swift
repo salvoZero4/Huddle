@@ -11,7 +11,11 @@ import ParthenoKit
 class HuddleService {
     static let shared = HuddleService()
     
+<<<<<<< Updated upstream
     let team = "PA4ZQ2S678QH" // Il tuo team corretto!
+=======
+    let team = SecretsManager.shared.parthenokitTeam
+>>>>>>> Stashed changes
     let tag = "HUDDLES"
     let chiaveLista = "TUTTI_GLI_HUDDLE" // La nostra scatola unica!
     

@@ -7,9 +7,9 @@ class EmailService {
     
     static let shared = EmailService()
     
-    private let serviceID  = "service_pl68vz2"
-    private let templateID = "template_gl2qdlm"
-    private let publicKey  = "p_S8MMkOsyTspeo__"
+    private let serviceID  = SecretsManager.shared.emailjsServiceID
+    private let templateID = SecretsManager.shared.emailjsTemplateID
+    private let publicKey  = SecretsManager.shared.emailjsPublicKey
     
     func sendVerificationCode(to email: String, code: String) async throws {
         let url = URL(string: "https://api.emailjs.com/api/v1.0/email/send")!
