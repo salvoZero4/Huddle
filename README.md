@@ -1,7 +1,8 @@
 <div align="center">
 
 # 📚 Huddle
-### *Can collaboration transform learning into an experience, not a task?*
+
+### _Can collaboration transform learning into an experience, not a task?_
 
 **Huddle** is an iOS app that transforms the university campus into a real-time connected community — making it effortless to find, join, and create study groups with fellow students.
 
@@ -32,7 +33,7 @@ Students face two core problems:
 - **Social Isolation** — Feeling alone among thousands of people
 - **Wasted Time** — Searching for empty classrooms and compatible study partners
 
-> *"The single strongest predictor of college success is the ability to participate in or form a study group."*
+> _"The single strongest predictor of college success is the ability to participate in or form a study group."_
 > — **Richard Light, Harvard University**
 
 ---
@@ -45,7 +46,7 @@ Huddle is an interactive iOS app that connects students in real time, letting th
 
 ## 🎬 Demo
 
-> Video demo coming soon
+[![Watch the Demo](https://img.shields.io/badge/Watch%20Demo-Google%20Drive-blue?style=for-the-badge&logo=google-drive)](https://drive.google.com/file/d/1BQCV-e-ow3SYCokL3_NV1Ef6_63XjCMO/view?usp=sharing)
 
 ---
 
@@ -101,16 +102,16 @@ Rate study sessions and build your academic reputation over time
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| Language | Swift 5.9 |
-| UI Framework | SwiftUI |
-| Architecture | MVVM |
-| Cloud Database | ParthenoKit (UniPa SDK) |
-| Email Service | EmailJS API |
-| Session Storage | UserDefaults |
-| Version Control | Git / GitHub |
-| IDE | Xcode 15 |
+| Layer           | Technology              |
+| --------------- | ----------------------- |
+| Language        | Swift 5.9               |
+| UI Framework    | SwiftUI                 |
+| Architecture    | MVVM                    |
+| Cloud Database  | ParthenoKit (UniPa SDK) |
+| Email Service   | EmailJS API             |
+| Session Storage | UserDefaults            |
+| Version Control | Git / GitHub            |
+| IDE             | Xcode 15                |
 
 ---
 
@@ -141,6 +142,7 @@ HuddleApp
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Xcode 15+
 - iOS 17+ deployment target
 - A University of Palermo email (`@community.unipa.it` or `@unipa.it`)
@@ -161,14 +163,14 @@ open Huddle.xcodeproj
 
 Developed collaboratively by 6 students at the **University of Palermo**, 2026.
 
-| Name | Degree | Role |
-|------|--------|------|
-| **Yasmine Ghomrassi** | Data Science & Software Engineering | Developer, Designer |
-| **Salvatore Scaravalle** | Computer Engineering | Developer, Designer |
-| **Daniele Giammarresi** | Computer Engineering | Developer, Designer |
-| **Gabriele Barone** | Biomedical Engineering | Developer, Designer |
-| **Israt Ahmed** | Computer Science | Designer |
-| **Matteo Maria Raimondi** | Automation & Systems Engineering | Researcher, Presentation Designer |
+| Name                      | Degree                              | Role                              |
+| ------------------------- | ----------------------------------- | --------------------------------- |
+| **Yasmine Ghomrassi**     | Data Science & Software Engineering | Developer, Designer               |
+| **Salvatore Scaravalle**  | Computer Engineering                | Developer, Designer               |
+| **Daniele Giammarresi**   | Computer Engineering                | Developer, Designer               |
+| **Gabriele Barone**       | Biomedical Engineering              | Developer, Designer               |
+| **Israt Ahmed**           | Computer Science                    | Designer                          |
+| **Matteo Maria Raimondi** | Automation & Systems Engineering    | Researcher, Presentation Designer |
 
 ---
 
